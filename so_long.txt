@@ -1,0 +1,27 @@
+Fazer parsing do mapa:
+	- Ver se o mapa tiver widths e heigths diferentes
+	- Ver se o mapa esta fechado
+	- Ver onde esta o jogador, o exit e o coletavel
+
+Criar a janela do jogo com tamanho ajustavel
+
+Consuante o tamanho da janela, dividir pela heigth e width
+
+
+Desenhar o mapa:
+	- Onde estiver 1 e parede
+	- Onde estiver 0 e espaco do jogo
+
+Desenhar o jogador
+	- Ir ver imagens para um jogador
+
+Desenhar o coletavel
+	- Ir ver imagens para o coletavel
+
+Desenhar a exit
+	- Ir ver imagens para o exit
+
+Fazer movimentos dos jogadores para as teclas w, s, a, d e esc para sair
+
+Confirmar se sai quando clicas na seta vermelha da janela
+
