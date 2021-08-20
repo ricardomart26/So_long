@@ -6,7 +6,7 @@ void	init_collect(t_master *master)
 	if (!(master->img.img_var))
 	{
 		printf("Error in getting collectable image\n");
-		free_all(master);
+		// free_all(master);
 	}
 }
 
@@ -16,10 +16,10 @@ void	init_floor(t_master *master)
 	if (!(master->img.img_var))
 	{
 		printf("Error memory allocate\n");
-		free_all(master);
+		// free_all(master);
 	}
-	master->floor->img_var = mlx_xpm_file_to_image(mlx, "floorExample.xpm", &master->floor->width, &master->floor->height);
-	master->floor->addr = mlx_get_data_addr(master->floor->img,
+	master->floor->img_var = mlx_xpm_file_to_image(master->mlx, "floorExample.xpm", &master->floor->width, &master->floor->height);
+	master->floor->addr = mlx_get_data_addr(master->floor->img_var,
 			&(master->floor->bits_per_pixel),
 			&(master->floor->line_length), &(master->floor->endian));
 }
@@ -30,7 +30,7 @@ void	init_player(t_master *master)
 	if (!(master->img.img_var))
 	{
 		printf("Error in getting player image\n");
-		free_all(master);
+		// free_all(master);
 	}
 }
 
@@ -40,10 +40,10 @@ void	init_walls(t_master *master)
 	if (!(master->img.img_var))
 	{
 		printf("Error memory allocate\n");
-		free_all(master);
+		// free_all(master);
 	}
-	master->walls->img_var = mlx_xpm_file_to_image(mlx, "wallsExample.xpm", &master->walls->width, &master->walls->height);
-	master->walls->addr = mlx_get_data_addr(master->walls->img,
+	master->walls->img_var = mlx_xpm_file_to_image(master->mlx, "wallsExample.xpm", &master->walls->width, &master->walls->height);
+	master->walls->addr = mlx_get_data_addr(master->walls->img_var,
 			&(master->walls->bits_per_pixel),
 			&(master->walls->line_length), &(master->walls->endian));
 }

@@ -60,7 +60,7 @@ int main(int ac, char **av)
 	if (!check_file(av[1], ".ber"))
 		return (-1);
 	fd = open(av[1], O_RDONLY);
-	parse_file(fd, &master.map);
+	parse_file(fd, &master.map, av[1]);
 	close(fd);
 	start_game(master);
 }

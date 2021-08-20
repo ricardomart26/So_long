@@ -17,15 +17,19 @@ typedef struct	s_pos
 	int	exit_y;
 	int	player_x;
 	int	player_y;
+	bool	is_alloc;
 }	t_pos;
 
 
 typedef	struct	s_map
 {
+	int total;
+	int big_w;
 	int width;
 	int height;
 	t_pos pos;
-	int **map;
+	int **array_of_map;
+	bool	is_alloc;
 }	t_map;
 
 
@@ -34,6 +38,7 @@ typedef	struct	s_player
 	t_img	img;
 	int	player_x;
 	int	player_y;
+	bool	is_alloc;
 }	t_player;
 
 
@@ -44,6 +49,7 @@ typedef	struct	s_collect
 	int		collect_x;
 	int		collect_y;
 	bool	is_collected;
+	bool	is_alloc;
 }	t_collect;
 
 
@@ -64,7 +70,7 @@ typedef	struct	s_master
 } t_master;
 
 int	check_file(char *file, char *ext);
-void	parse_file(int fd, t_map *map);
+void	parse_file(int fd, t_map *map, char *file_name);
 t_img	load_image(void	*mlx, char *path);
 void	init_avatars(t_master *master);
 void	init_master(t_master *master);
