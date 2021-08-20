@@ -40,8 +40,9 @@ typedef	struct	s_player
 typedef	struct	s_collect
 {
 	t_img	img;
-	int	collect_x;
-	int	collect_y;
+	int		in_map;
+	int		collect_x;
+	int		collect_y;
 	bool	is_collected;
 }	t_collect;
 
@@ -55,9 +56,8 @@ typedef	struct	s_master
 	int			win_h;
 	int			win_w;
 	t_player	*pla;
-	t_img		floor;
-	t_img		walls;
-	t_img		collect;
+	t_img		*floor;
+	t_img		*walls;
 	t_img		img;
 	t_map		map;
 	t_collect	*col;
@@ -65,5 +65,9 @@ typedef	struct	s_master
 
 int	check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map);
+t_img	load_image(void	*mlx, char *path);
+void	init_avatars(t_master *master);
+void	init_master(t_master *master);
+void	init_map(t_map *map);
 
 #endif
