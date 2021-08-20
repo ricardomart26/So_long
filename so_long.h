@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include <mlx.h>
 #include "struct.h"
-
+#include <stdbool.h>
 
 typedef struct	s_pos
 {
@@ -28,15 +28,39 @@ typedef	struct	s_map
 	int **map;
 }	t_map;
 
+
+typedef	struct	s_player
+{
+	t_img	img;
+	int	player_x;
+	int	player_y;
+}	t_player;
+
+
+typedef	struct	s_collect
+{
+	t_img	img;
+	int	collect_x;
+	int	collect_y;
+	bool	is_collected;
+}	t_collect;
+
+
+
 typedef	struct	s_master
 {
-	void	*mlx;
-	void	*win;
-	void	*mlx_img;
-	int		win_h;
-	int		win_w;
-	t_img 	img;
-	t_map	map;
+	void		*mlx;
+	void		*win;
+	void		*mlx_img;
+	int			win_h;
+	int			win_w;
+	t_player	*pla;
+	t_img		floor;
+	t_img		walls;
+	t_img		collect;
+	t_img		img;
+	t_map		map;
+	t_collect	*col;
 } t_master;
 
 int	check_file(char *file, char *ext);
