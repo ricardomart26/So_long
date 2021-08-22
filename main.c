@@ -41,6 +41,7 @@ void	start_game(t_master master)
 	master.img.img_var = mlx_new_image(master.mlx, master.win_w, master.win_h);
 	master.img.addr = mlx_get_data_addr(master.img.img_var, &master.img.bits_per_pixel, &master.img.line_length, &master.img.endian);
 	init_avatars(&master);
+	
 	mlx_loop_hook(master.mlx, walk, &master);
 	mlx_key_hook(master.win, player_mov, &master);
 	mlx_hook(master.win, 02, 1L << 2, player_mov, &master);
