@@ -9,6 +9,12 @@
 #include "struct.h"
 #include <stdbool.h>
 
+#define FLOOR 0
+#define WALL 1
+#define P 2
+#define C 3
+#define E 4
+
 typedef struct	s_pos
 {
 	int	collect_x;
@@ -24,7 +30,6 @@ typedef struct	s_pos
 typedef	struct	s_map
 {
 	int total;
-	int big_w;
 	int width;
 	int height;
 	t_pos pos;
@@ -68,6 +73,7 @@ typedef	struct	s_master
 	t_collect	*col;
 } t_master;
 
+t_master	draw(t_master *master, int x, int y, int color);
 int	check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map, char *file_name);
 t_img	load_image(void	*mlx, char *path);

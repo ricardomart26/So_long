@@ -19,56 +19,125 @@ void	open_file(int *fd, char *fname,int opt)
 	}
 }
 
-int str_search(char *str, char c)
+void	print_double_array(int	**array, int width, int height)
 {
-	(void)str;
-	(void)c;
-	return (0);
+	int x = 0;
+
+	while (x < height)
+	{
+		int i = 0;
+		while (i < width)
+		{
+			printf("%d ", array[x][i]);
+			i++;
+		}
+		printf("\n");
+		x++;
+	}
 }
 
-void	bigger_widht(int *big, int *width, int size)
+int	ft_strlen(char *str)
 {
-	int i = -1;
+	int i;
 
-	while (++i < size)
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+
+int	ft_atoi(char *str)
+{
+	int i;
+	int size;
+	int ret;
+
+	size = ft_strlen(str);
+	i = 0;
+	ret = 0;
+	if (*str == '0' && size == 1)
+		return (0);
+	while (i < size)
 	{
-		if (i == 0)
-			*big = width[i];
-		else if (width[i] > *big)
-			*big = width[i];
+		ret += str[i] - 48;
+		i++;
+		if (i == size)
+			return (ret);
+		ret *= 10;
 	}
-	printf("big widht %d\n", *big);
+	exit(0);
+	return (-1);
+}
+
+int	check_elem(char c)
+{
+	printf("teste 3 %c\n", c);
+	if (c == '1')
+	{
+		printf("Retorna 1?\n");
+		return (1);
+	}
+	else if (c == '0')
+		return (0);
+	else if (c == 'P' || c == 'p')
+		return (2);
+	else if (c == 'c' || c == 'C')
+		return (3);
+	else if (c == 'e' || c == 'E')
+		return (4);
+	return (-1);
 }
 
 void	get_array(t_map *map, char *fname, int buf_size)
 {
 	int fd;
 	int ret;
-	char buffer[buf_size + 1];
+	char buffer[buf_size];
+	int i;
+	int x;
+	int y;
 
-	bigger_widht(&map->big_w, map->width, map->height);
+	y = 0;
+	i = 0;
 	open_file(&fd, fname, 0);
-	*map->array_of_map = malloc(sizeof(int) * map->big_w + 1);
+	printf("width %d\n", map->width);
 	map->array_of_map = malloc(sizeof(int *) * map->height + 1);
+	*map->array_of_map = malloc(sizeof(int) * map->width + 1);
 	printf("fd %d buf_size %d\n", fd, buf_size);
 	while ((ret = read(fd, &buffer, buf_size) > 0))
 	{
-		buffer[buf_size - 1] = 0;
-		printf("buffer %s\n Acaba aqui\n", buffer);
+		buffer[buf_size] = 0;
+		printf("%s\n Acaba aqui\n", buffer);
+		while (i < map->height)
+		{
+			printf("teste 1\n");
+			x = 0;
+			while (x < map->width)
+			{
+				if (buffer[y] == '\n')
+					y++;
+				printf("i %d x %d y %d buffer %c\n", i, x, y, buffer[y]);
+				map->array_of_map[i][x] = check_elem(buffer[y]);
+				printf("why? \n");
+				if (map->array_of_map[i][y] == -1)
+				{
+					printf("Invalid char at map\n");
+					exit(0);
+				}
+				y++;
+				printf("array of map %d x %d \n", map->array_of_map[i][x], x);
+				x++;
+			}
+			// if (buffer[x] == '\n')
+			i++;
+			printf("teste\n");
+		}
+		printf("teste2\n");
+
+		break;
 	}
-}
-
-int	total_lines(int *widht)
-{
-	int total;
-	int i;
-
-	i = -1;
-	total = 0;
-	while (widht[++i])
-		total += widht[i];
-	printf("total %d\n") ;
-	return (total);
+	print_double_array(map->array_of_map, map->width, map->height);
 }
 
 
@@ -77,7 +146,6 @@ void	parse_file(int fd, t_map *map, char *file_name)
 	int ret;
 	char buffer[1024];
 	int i;
-	int width;
 
 	i = 0;
 	ret = 0;
@@ -86,17 +154,17 @@ void	parse_file(int fd, t_map *map, char *file_name)
 		buffer[1023] = 0;
 		while (is_valid(buffer[i]))
 		{
-			while (buffer[width] != '\n')
-				width++;
+			while (buffer[map->width] != '\n' && i == 0)
+				map->width++;
 			if (buffer[i] == '\n')
 				map->height++;			
-			map->width[i] = width;
 			i++;
 		}
 		printf("\twidth %d\n", map->width);
 		printf("\theight %d\n", map->height);
 	}
 	close(fd);
-	map->total = total_lines(map->width);
+	map->total = map->width * map->height + 3;
+	printf("total %d\n", map->total);
 	get_array(map, file_name, map->total);
 }

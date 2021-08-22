@@ -1,7 +1,5 @@
 #include "so_long.h"
 
-
-
 void	my_mlx_pixel_put(t_master *data, int x, int y, int color)
 {
 	char	*dst;
@@ -42,9 +40,9 @@ void	start_game(t_master master)
 	master.win = mlx_new_window(master.mlx, master.win_w, master.win_h, "fds");
 	master.img.img_var = mlx_new_image(master.mlx, master.win_w, master.win_h);
 	master.img.addr = mlx_get_data_addr(master.img.img_var, &master.img.bits_per_pixel, &master.img.line_length, &master.img.endian);
+	printf("bits_per_pixel %d\n", master.img.bits_per_pixel);
 	init_avatars(&master);
-	
-	mlx_loop_hook(master.mlx, walk, &master);
+	// mlx_loop_hook(master.mlx, draw, &master);
 	mlx_key_hook(master.win, player_mov, &master);
 	mlx_hook(master.win, 02, 1L << 2, player_mov, &master);
 	mlx_loop(master.mlx);
@@ -65,5 +63,6 @@ int main(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	parse_file(fd, &master.map, av[1]);
 	close(fd);
+	printf("teste\n");
 	start_game(master);
 }
