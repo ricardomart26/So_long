@@ -53,7 +53,6 @@ typedef	struct	s_collect
 }	t_collect;
 
 
-
 typedef	struct	s_master
 {
 	void		*mlx;
