@@ -72,12 +72,8 @@ int	ft_atoi(char *str)
 
 int	check_elem(char c)
 {
-	printf("teste 3 %c\n", c);
 	if (c == '1')
-	{
-		printf("Retorna 1?\n");
 		return (1);
-	}
 	else if (c == '0')
 		return (0);
 	else if (c == 'P' || c == 'p')
@@ -99,42 +95,37 @@ void	get_array(t_map *map, char *fname, int buf_size)
 	int y;
 
 	y = 0;
-	i = 0;
+	i = -1;
 	open_file(&fd, fname, 0);
-	printf("width %d\n", map->width);
+	// printf("width %d height %d\n", map->width, map->height);
 	map->array_of_map = malloc(sizeof(int *) * map->height + 1);
-	*map->array_of_map = malloc(sizeof(int) * map->width + 1);
+	while (++i < map->height)
+		map->array_of_map[i] = malloc(sizeof(int));
+	i = 0;
 	printf("fd %d buf_size %d\n", fd, buf_size);
 	while ((ret = read(fd, &buffer, buf_size) > 0))
 	{
 		buffer[buf_size] = 0;
-		printf("%s\n Acaba aqui\n", buffer);
 		while (i < map->height)
 		{
-			printf("teste 1\n");
 			x = 0;
 			while (x < map->width)
 			{
 				if (buffer[y] == '\n')
 					y++;
-				printf("i %d x %d y %d buffer %c\n", i, x, y, buffer[y]);
+				// printf("i %d x %d y %d buffer %c\n", i, x, y, buffer[y]);
 				map->array_of_map[i][x] = check_elem(buffer[y]);
-				printf("why? \n");
+				// printf("map %d\n", map->array_of_map[i][x]);
 				if (map->array_of_map[i][y] == -1)
 				{
 					printf("Invalid char at map\n");
 					exit(0);
 				}
 				y++;
-				printf("array of map %d x %d \n", map->array_of_map[i][x], x);
 				x++;
 			}
-			// if (buffer[x] == '\n')
 			i++;
-			printf("teste\n");
 		}
-		printf("teste2\n");
-
 		break;
 	}
 	print_double_array(map->array_of_map, map->width, map->height);
