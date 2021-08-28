@@ -113,12 +113,10 @@ void	get_array(t_map *map, char *fname, int buf_size)
 			{
 				if (buffer[y] == '\n')
 					y++;
-				// printf("i %d x %d y %d buffer %c\n", i, x, y, buffer[y]);
 				map->array_of_map[i][x] = check_elem(buffer[y]);
-				// printf("map %d\n", map->array_of_map[i][x]);
 				if (map->array_of_map[i][y] == -1)
 				{
-					printf("Invalid char at map\n");
+					printf("Invalid char at map %c\n", map->array_of_map[i][y]);
 					exit(0);
 				}
 				y++;

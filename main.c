@@ -34,18 +34,15 @@ int	player_mov(int keycode, t_master *master)
 
 void	start_game(t_master master)
 {
-	void *mlx;
 	master.map.pos.player_x = master.win_w / 2;
 	master.map.pos.player_y = master.win_h / 2;
-	printf("teste 1\n");
-	mlx = mlx_init();
-	printf("teste 2\n");
+	master.mlx = mlx_init();
 	master.win = mlx_new_window(master.mlx, master.win_w, master.win_h, "fds");
+	
 	master.img.img_var = mlx_new_image(master.mlx, master.win_w, master.win_h);
 	master.img.addr = mlx_get_data_addr(master.img.img_var, &master.img.bits_per_pixel, &master.img.line_length, &master.img.endian);
-	printf("bits_per_pixel %d\n", master.img.bits_per_pixel);
 	init_avatars(&master);
-	// mlx_loop_hook(master.mlx, draw, &master);
+	mlx_loop_hook(master.mlx, draw, &master);
 	mlx_key_hook(master.win, player_mov, &master);
 	mlx_hook(master.win, 02, 1L << 2, player_mov, &master);
 	mlx_loop(master.mlx);
