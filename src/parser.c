@@ -1,4 +1,4 @@
-#include "so_long.h"
+#include "../includes/so_long.h"
 
 int	is_valid(char c)
 {
@@ -103,6 +103,7 @@ void	get_array(t_map *map, char *fname, int buf_size)
 		map->array_of_map[i] = malloc(sizeof(int));
 	i = 0;
 	printf("fd %d buf_size %d\n", fd, buf_size);
+	x = 0;
 	while ((ret = read(fd, &buffer, buf_size) > 0))
 	{
 		buffer[buf_size] = 0;
@@ -130,23 +131,38 @@ void	get_array(t_map *map, char *fname, int buf_size)
 }
 
 
+void	init_parse_info(t_parse_info *info)
+{
+	info->collect_exist = false;
+	info->exit_exist = false;
+	info->player_exist = false;
+}
+
 void	parse_file(int fd, t_map *map, char *file_name)
 {
 	int ret;
 	char buffer[1024];
 	int i;
+	t_parse_info info;
 
 	i = 0;
 	ret = 0;
+	init_parse_info(&info);
 	while ((ret = read(fd, &buffer, 1024)) > 0)
 	{
 		buffer[1023] = 0;
 		while (is_valid(buffer[i]))
 		{
-			while (buffer[map->width] != '\n' && i == 0)
-				map->width++;
+			if (i == 0)
+			{
+				while (buffer[map->width] != '\n')
+				{
+					i++;
+					map->width++;
+				}
+			}
 			if (buffer[i] == '\n')
-				map->height++;			
+				map->height++;
 			i++;
 		}
 		printf("\twidth %d\n", map->width);
