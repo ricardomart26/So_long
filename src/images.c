@@ -1,4 +1,4 @@
-#include "so_long.h"
+#include "../includes/so_long.h"
 
 t_img	load_image(void	*mlx, char *path)
 {

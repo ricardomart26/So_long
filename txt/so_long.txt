@@ -25,3 +25,11 @@ Fazer movimentos dos jogadores para as teclas w, s, a, d e esc para sair
 
 Confirmar se sai quando clicas na seta vermelha da janela
 
+
+best sites for minilibX:
+
+https://gontjarow.github.io/MiniLibX/mlx-tutorial-create-image.html
+
+
+
+

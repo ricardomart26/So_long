@@ -5,7 +5,9 @@ CC = gcc -Wall -Werror -Wextra
 # MLXARQUIVE = minilibx_opengl_20191021/libmlx.a
 LIBX = -lmlx -lXext -lX11
 
-SRC = $(wildcard *.c)
+INCLUDE = includes/so_long.h
+
+SRC = ${wildcard src/*.c}
 
 OBJS = $(SRC:.c=.o)
 
@@ -13,8 +15,8 @@ NAME = so_long
 
 all : $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(LIBX) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS) $(INCLUDE)
+	$(CC) $(LIBX) $(OBJS) -I$(INCLUDE) -o $(NAME)
 
 clean: 
 	rm $(OBJS)
