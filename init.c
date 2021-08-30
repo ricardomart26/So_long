@@ -6,17 +6,17 @@ void	init_master(t_master *master)
 	master->win_w = 1000;
 }
 
-int	*init_array(int size)
-{
-	int i;
-	int arr[size];
+// int	*init_array(int size)
+// {
+// 	int i;
+// 	int arr[size];
 
-	i = -1;
-	while (++i < size)
-		arr[i] = 0;
+// 	i = -1;
+// 	while (++i < size)
+// 		arr[i] = 0;
 
-	return (arr);
-}
+// 	return (arr);
+// }
 
 void	init_map(t_map *map)
 {

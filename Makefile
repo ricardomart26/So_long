@@ -1,8 +1,9 @@
 
 CC = gcc -Wall -Werror -Wextra 
 
-LIBX = -lmlx -framework OpenGL -framework AppKit
+# LIBX = -lmlx -framework OpenGL -framework AppKit
 # MLXARQUIVE = minilibx_opengl_20191021/libmlx.a
+LIBX = -lmlx -lXext -lX11
 
 SRC = $(wildcard *.c)
 

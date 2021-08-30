@@ -19,26 +19,6 @@ void	open_file(int *fd, char *fname,int opt)
 	}
 }
 
-int str_search(char *str, char c)
-{
-	(void)str;
-	(void)c;
-	return (0);
-}
-
-void	bigger_widht(int *big, int *width, int size)
-{
-	int i = -1;
-
-	while (++i < size)
-	{
-		if (i == 0)
-			*big = width[i];
-		else if (width[i] > *big)
-			*big = width[i];
-	}
-	printf("big widht %d\n", *big);
-}
 
 void	get_array(t_map *map, char *fname, int buf_size)
 {
@@ -46,7 +26,6 @@ void	get_array(t_map *map, char *fname, int buf_size)
 	int ret;
 	char buffer[buf_size + 1];
 
-	bigger_widht(&map->big_w, map->width, map->height);
 	open_file(&fd, fname, 0);
 	*map->array_of_map = malloc(sizeof(int) * map->big_w + 1);
 	map->array_of_map = malloc(sizeof(int *) * map->height + 1);
@@ -58,19 +37,11 @@ void	get_array(t_map *map, char *fname, int buf_size)
 	}
 }
 
-int	total_lines(int *widht)
-{
-	int total;
-	int i;
+// int	total_lines(int widht, int height)
+// {
+// }
 
-	i = -1;
-	total = 0;
-	while (widht[++i])
-		total += widht[i];
-	printf("total %d\n") ;
-	return (total);
-}
-
+#define total_line(w, h) (w * h)
 
 void	parse_file(int fd, t_map *map, char *file_name)
 {
@@ -89,14 +60,14 @@ void	parse_file(int fd, t_map *map, char *file_name)
 			while (buffer[width] != '\n')
 				width++;
 			if (buffer[i] == '\n')
-				map->height++;			
-			map->width[i] = width;
+				map->height++;
+			map->width = width;
 			i++;
 		}
 		printf("\twidth %d\n", map->width);
 		printf("\theight %d\n", map->height);
 	}
 	close(fd);
-	map->total = total_lines(map->width);
+	map->total = total_line(map->width, map->height);
 	get_array(map, file_name, map->total);
 }
