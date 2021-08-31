@@ -1,5 +1,13 @@
 #include "../includes/so_long.h"
 
+int	is_valid(char c)
+{
+	if (c == '1' || c == '0' || c == 'C' || c == 'E' || \
+		c == 'P' || c == '\n')
+		return (1);
+	return (0);
+}
+
 int	check_file(char *file, char *ext)
 {
 	while (*file != '\0')

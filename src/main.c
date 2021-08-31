@@ -6,8 +6,8 @@ int	exit_hook(t_master *master)
 
 	i = -1;
 	while (++i < master->win_w)
-		free(master->map.array_of_map[i]);
-	free(master->map.array_of_map);
+		free(master->map.map2d[i]);
+	free(master->map.map2d);
 	mlx_destroy_image(master->mlx, master->floor.img_var);
 	mlx_destroy_image(master->mlx, master->exit.img_var);
 	mlx_destroy_image(master->mlx, master->col->img.img_var);
@@ -62,12 +62,12 @@ void	update_positions(t_master *master, int key)
 int not_wall(t_master *master, int x, int y)
 {
 	return (x < master->win_h && y < master->win_w \
-		&& master->map.array_of_map[y][x] != WALL);
+		&& master->map.map2d[y][x] != WALL);
 }
 
 void update_coll(t_master *master, int x, int y)
 {
-	if (master->map.array_of_map[y][x] == C)
+	if (master->map.map2d[y][x] == C)
 		master->col->number_of_c--;
 	master->player_moves++;
 }
@@ -80,13 +80,13 @@ void	refresh_map(t_master *master, int newx, int newy)
 
 	x = master->pla->last_pos.x;
 	y = master->pla->last_pos.y;
-	if (master->map.array_of_map[y][x] == E)
+	if (master->map.map2d[y][x] == E)
 		img = &master->exit;
 	else
 		img = &master->floor;
 	get_map_cordinates(&master->map, x, y);
 	render_img(master, img, &master->map);
-	if (master->map.array_of_map[newy][newx] == E)
+	if (master->map.map2d[newy][newx] == E)
 		img = &master->exit;
 	else
 		img = &master->pla->img;
@@ -101,7 +101,7 @@ void	refresh_map(t_master *master, int newx, int newy)
 
 int	game_finished(t_master *master, int x, int y)
 {
-	if (master->map.array_of_map[y][x] == 'N' && master->col->number_of_c == 0)
+	if (master->map.map2d[y][x] == 'N' && master->col->number_of_c == 0)
 		return (1);
 	else
 		return (0);
@@ -159,6 +159,7 @@ int main(int ac, char **av)
 	init_master(&master);
 	fd = open(av[1], O_RDONLY);
 	parse_file(fd, &master.map, av[1]);
+	// print_double_array(master.map.map2d, master.map.width, master.map.height);
 	close(fd);
 	start_game(&master);
 }

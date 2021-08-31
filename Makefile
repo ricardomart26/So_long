@@ -10,6 +10,8 @@ LIBFT_DIR = libft
 
 INCLUDE = includes/so_long.h
 
+SRC = ${wildcard src/*.c}
+
 OBJS = $(SRC:.c=.o)
 
 NAME = so_long

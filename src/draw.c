@@ -25,15 +25,15 @@ void	draw(t_master *master)
 		while (++x < master->win_w)
 		{
 			get_map_cordinates(&master->map, x, y);
-			if (master->map.array_of_map[y][x] == WALL)
+			if (master->map.map2d[y][x] == WALL)
 				img = &master->walls;
-			else if (master->map.array_of_map[y][x] == FLOOR)
+			else if (master->map.map2d[y][x] == FLOOR)
 				img = &master->floor;
-			else if (master->map.array_of_map[y][x] == C)
+			else if (master->map.map2d[y][x] == C)
 				img = &master->col->img;
-			else if (master->map.array_of_map[y][x] == P)
+			else if (master->map.map2d[y][x] == P)
 				img = &master->pla->img;
-			else if (master->map.array_of_map[y][x] == E)
+			else if (master->map.map2d[y][x] == E)
 				img = &master->exit;
 			render_img(master, img, &master->map);
 		}
