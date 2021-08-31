@@ -5,9 +5,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <mlx.h>
 # include "struct.h"
 # include <stdbool.h>
+# include "../minilibx_mms_20200219/mlx.h"
 
 # define IMG_HEIGHT	99
 # define IMG_WIDTH	99
@@ -43,7 +43,6 @@ typedef	struct	s_map
 	int		width;
 	int		height;
 	int		**array_of_map;
-	bool	is_alloc;
 	t_vector pos_x_y;
 }	t_map;
 
@@ -53,7 +52,6 @@ typedef	struct	s_player
 	t_img	img;
 	t_vector pos;
 	t_vector last_pos;
-	bool	is_alloc;
 }	t_player;
 
 

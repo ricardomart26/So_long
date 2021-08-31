@@ -2,8 +2,11 @@
 CC = gcc -Wall -Werror -Wextra 
 
 LIBX = -lmlx -framework OpenGL -framework AppKit
-# MLXARQUIVE = minilibx_opengl_20191021/libmlx.a
+
 SRC = $(wildcard src/*.c)
+
+LIBFT_EXEC = libft/libft.a
+LIBFT_DIR = libft
 
 INCLUDE = includes/so_long.h
 
@@ -13,13 +16,18 @@ NAME = so_long
 
 all : $(NAME)
 
-$(NAME): $(OBJS) $(INCLUDE)
-	$(CC) $(LIBX) $(OBJS) -I$(INCLUDE) -o $(NAME)
+$(NAME): $(LIBFT_EXEC) $(OBJS)
+	$(CC) $(LIBX) $(LIBFT_EXEC) $(OBJS) -o $(NAME)
+
+$(LIBFT_EXEC):
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean: 
+	$(MAKE) -C $(LIBFT_DIR) clean
 	rm $(OBJS)
 
 fclean: clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm $(NAME)
 
 re: fclean $(NAME)

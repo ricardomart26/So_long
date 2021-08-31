@@ -102,7 +102,7 @@ void	get_array(t_map *map, char *fname, int buf_size)
 	while (++i < map->height)
 		map->array_of_map[i] = malloc(sizeof(int));
 	i = 0;
-	printf("fd %d buf_size %d\n", fd, buf_size);
+	// printf("fd %d buf_size %d\n", fd, buf_size);
 	x = 0;
 	while ((ret = read(fd, &buffer, buf_size) > 0))
 	{

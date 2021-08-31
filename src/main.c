@@ -139,10 +139,7 @@ void	start_game(t_master *master)
 	mlx = mlx_init();
 	printf("teste2\n");
 	master->win = mlx_new_window(mlx, master->win_w, master->win_h, "fds");
-	
-	// do_panel(&master);
 	init_avatars(master);
-	// mlx_loop_hook(mlx, draw, &master);
 	mlx_key_hook(master->win, player_mov, &master);
 	mlx_hook(master->win, 02, 1L << 2, player_mov, &master);
 	mlx_loop(mlx);
@@ -157,12 +154,11 @@ int main(int ac, char **av)
 		return (-1);
 	if (!check_file(av[1], ".ber"))
 		return (-1);
-
+	
 	init_map(&master.map);
 	init_master(&master);
 	fd = open(av[1], O_RDONLY);
 	parse_file(fd, &master.map, av[1]);
-	// print_double_array(master.map.array_of_map, master.map.width, master.map.height);
 	close(fd);
 	start_game(&master);
 }
