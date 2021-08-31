@@ -36,49 +36,56 @@ int	check_elem(char c, t_parse_info *info)
 }
 
 
-void	alloc_map(int **map2d, int size)
+int	**alloc_map(int size, int size2)
 {
 	int i;
-
-	map2d = malloc(sizeof(int *) * size + 1);
+	int **map2d;
+	printf("size %d size2 %d\n", size, size2);
+	
+	map2d = (int **)malloc(sizeof(int *) * size + 1);
+	if (!map2d)
+		return (0);
 	i = -1;
 	while (++i < size)
-		map2d[i] = malloc(sizeof(int) + 1);
-	
+	{
+		map2d[i] = malloc(sizeof(int) * size2 + 1);
+		if (!map2d[i])
+			return (0);
+	}
+	return (map2d);
 }
 
-void	get_array(t_map *map, char *fname, int buf_size, t_parse_info *info)
+void	get_array(t_map *map, char *fname, t_parse_info *info)
 {
-	int fd;
-	int ret;
-	char buffer[buf_size];
-	int i;
+	t_file f;
 	int x;
+	int total;
 
-	open_file(&fd, fname, 0);
-	alloc_map(map->map2d, map->height);
-	i = 0;
-	// printf("fd %d buf_size %d\n", fd, buf_size);
-	while ((ret = read(fd, &buffer, buf_size) > 0))
+	open_file(&f.fd, fname, 0);
+	map->map2d = alloc_map(map->height, map->width);
+	f.index = 0;
+	total = 0;
+	while ((f.ret = read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
 	{
-		buffer[buf_size] = 0;
-		while (i < map->height)
+		f.buffer[BUF_SIZE - 1] = 0;
+		while (f.index < map->height)
 		{
 			x = 0;
-			while (x < map->width && *buffer != '\n')
+			while (x < map->width && f.buffer[total] != '\n')
 			{
-				map->map2d[i][x] = check_elem(*buffer, info);
-				if (map->map2d[i][x] == -1)
-					error_msg("Invalid char at map %c\n");
+				map->map2d[f.index][x] = check_elem(f.buffer[total], info);
+				if (map->map2d[f.index][x] == -1)
+				{
+					printf("buffer %c\n", f.buffer[total]);
+					error_msg("Invalid char at map\n");
+				}
 				x++;
-				(*buffer)++;
+				total++;
 			}
-			if (*buffer == '\n')
-				(*buffer)++;
-			i++;
+			total++;
+			f.index++;
 		}
 	}
-	print_double_array(map->map2d, map->width, map->height);
 }
 
 
@@ -89,40 +96,52 @@ void	init_parse_info(t_parse_info *info)
 	info->player_exist = 0;
 }
 
+
+int width_map(int *width, char *buffer)
+{
+	int i = 0;
+	while (buffer[i] != '\n')
+	{
+		(*width)++;
+		i++;
+	}
+	return (i);
+}
+
+int	validate_array(t_map *map)
+{
+	(void)map;
+	return (1);
+}
+
+
 void	parse_file(int fd, t_map *map, char *file_name)
 {
-	int ret;
-	char buffer[1024];
-	int i;
+	t_file f;
 	t_parse_info info;
 
-	i = 0;
-	ret = 0;
+	f.index = 0;
 	init_parse_info(&info);
-	while ((ret = read(fd, &buffer, 1024)) > 0)
+	while ((f.ret = read(fd, &f.buffer, BUF_SIZE - 1)) > 0)
 	{
-		buffer[1023] = 0;
-		while (is_valid(*buffer))
+		f.buffer[1023] = 0;
+		while (is_valid(f.buffer[f.index]))
 		{
-			if (i == 0)
-			{
-				while (buffer[map->width] != '\n')
-				{
-					(*buffer)++;
-					map->width++;
-				}
-				i++;
-			}
-			if (*buffer == '\n')
+			// Se nao comecar com o mapa
+			if (f.index == 0)
+				f.index = width_map(&map->width, f.buffer);
+			if (f.buffer[f.index] == '\n')
 				map->height++;
-			(*buffer)++;
+			f.index++;
 		}
 		printf("\twidth %d\n", map->width);
 		printf("\theight %d\n", map->height);
 	}
 	close(fd);
-	map->total = map->width * map->height + 3;
+	map->total = map->width * map->height;
 	printf("total %d\n", map->total);
-	get_array(map, file_name, map->total, &info);
+	get_array(map, file_name, &info);
 
+	if (!validate_array(map))
+		error_msg("Something wrong with the map");
 }

@@ -1,6 +1,7 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+# define BUF_SIZE 1024
 
 typedef struct s_img {
 	void	*img_var;
@@ -11,5 +12,14 @@ typedef struct s_img {
 	int		width;
 	int		height;
 }	t_img;
+
+typedef struct s_file
+{
+	int fd;
+	char buffer[BUF_SIZE];
+	int ret;
+	int	index;
+}	t_file;
+
 
 #endif

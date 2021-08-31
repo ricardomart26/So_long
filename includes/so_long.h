@@ -102,6 +102,7 @@ void	render_img(t_master *master, t_img *img, t_map *map);
 int		ft_atoi(char *str);
 int		ft_strlen(char *str);
 int		is_valid(char c);
+void	error_msg(char *str);
 
 void	print_double_array(int	**array, int width, int height);
 

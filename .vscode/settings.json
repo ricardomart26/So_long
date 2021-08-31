@@ -1,12 +1,6 @@
 {
 	"files.associations": {
-<<<<<<< HEAD
 		"libft.h": "c",
 		"mlx.h": "c"
 	}
 }
-=======
-		"unistd.h": "c"
-	}
-}
->>>>>>> 3d2bb64bf1c7d8545df1ae6975f07616f40ee7eb

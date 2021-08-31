@@ -48,8 +48,16 @@ void	init_walls(t_master *master)
 void	init_avatars(t_master *master)
 {
 	init_player(master);
+	printf("teste2\n");
+
 	init_collect(master);
+	printf("teste3\n");
+
 	init_floor(master);
+	printf("teste4\n");
+
 	init_walls(master);
+	printf("teste5\n");
+
 	init_exit(master);
 }
