@@ -102,3 +102,20 @@
 // 	int	line_size;
 // 	int	endian;
 // }	t_panel;
+
+// void	my_mlx_pixel_put(t_master *data, int x, int y, int color)
+// {
+// 	char	*dst;
+
+// 	dst = data->img.addr + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
+// 	*(unsigned int*)dst = color;
+// }
+
+// int	walk(t_master *master)
+// {
+// 	master->img.img_var = mlx_new_image(master->mlx, master->win_w, master->win_h);
+// 	master->img.addr = mlx_get_data_addr(master->img.img_var, &master->img.bits_per_pixel, &master->img.line_length, &master->img.endian);
+// 	my_mlx_pixel_put(master, master->pla.pos.x, master->pla.pos.y, 0x00FF0000);
+// 	mlx_put_image_to_window(master->mlx, master->win, master->img.img_var, 0, 0);
+// 	return (0);
+// }

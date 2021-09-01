@@ -1,5 +1,5 @@
 
-CC = gcc -Wall -Werror -Wextra 
+CC = gcc -Wall -Werror=implicit-function-declaration -Wextra -fpie
 
 LIBX = -lmlx -framework OpenGL -framework AppKit
 
@@ -7,6 +7,8 @@ SRC = $(wildcard src/*.c)
 
 LIBFT_EXEC = libft/libft.a
 LIBFT_DIR = libft
+MINILIBX_DIR = minilibx_mms_20200219
+
 
 INCLUDE = includes/so_long.h
 
@@ -15,22 +17,27 @@ SRC = ${wildcard src/*.c}
 OBJS = $(SRC:.c=.o)
 
 NAME = so_long
+HDRS = includes
 
 all : $(NAME)
 
-$(NAME): $(LIBFT_EXEC) $(OBJS)
-	$(CC) $(LIBX) $(LIBFT_EXEC) $(OBJS) -o $(NAME)
+compile_libs:
+	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) bonus -C $(LIBFT_DIR)
+	@$(MAKE) -C $(MINILIBX_DIR)
+	@mv $(MINILIBX_DIR)/libmlx.dylib .
+	@mv $(LIBFT_DIR)/libft.a .
 
-$(LIBFT_EXEC):
-	$(MAKE) -C $(LIBFT_DIR)
+$(NAME): compile_libs $(OBJS)
+	@$(CC) $(LIBX) -L. -lft -I $(HDRS) $(OBJS) -o $(NAME)
 
 clean: 
-	$(MAKE) -C $(LIBFT_DIR) clean
-	rm $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	rm $(NAME)
+	make fclean -C $(LIBFT_DIR)
+	rm -fr libft.a
+	rm -f $(NAME)
 
 re: fclean $(NAME)
 

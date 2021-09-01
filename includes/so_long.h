@@ -8,9 +8,12 @@
 # include "struct.h"
 # include <stdbool.h>
 # include "../minilibx_mms_20200219/mlx.h"
+# include "../Libft/libft.h"
 
-# define IMG_HEIGHT	99
-# define IMG_WIDTH	99
+# define IMG_HEIGHT	50
+# define IMG_WIDTH	50
+# define WIN_WIDTH	1000
+# define WIN_HEIGHT	1000
 # define FLOOR 0
 # define WALL 1
 # define P 2
@@ -28,82 +31,73 @@ typedef struct s_vector
 {
 	int	x;
 	int	y;
-}	t_vector;
+}		t_vector;
 
 typedef struct parse_info
 {
-	int exit_exist;
-	int collect_exist;
-	int player_exist;
-} t_parse_info;
+	int	e_exists;
+	int	c_exists;
+	int	p_exists;
+}		t_parse_info;
 
-typedef	struct	s_map
+typedef struct s_map
 {
-	int		total;
-	int		width;
-	int		height;
-	int		**map2d;
-	t_vector pos_x_y;
-}	t_map;
+	int			total;
+	int			width;
+	int			height;
+	int			**map2d;
+	t_vector	pos_x_y;
+}		t_map;
 
-
-typedef	struct	s_player
+typedef struct s_player
 {
-	t_img	img;
-	t_vector pos;
-	t_vector last_pos;
-}	t_player;
+	t_img		img;
+	t_vector	pos;
+	t_vector	last_pos;
+}		t_player;
 
-
-typedef	struct	s_collect
+typedef struct s_collect
 {
 	t_img	img;
 	int		in_map;
 	int		number_of_c;
-	bool	is_collected;
-	bool	is_alloc;
-}	t_collect;
+}		t_collect;
 
-
-typedef	struct	s_master
+typedef struct s_master
 {
 	void		*mlx;
 	void		*win;
 	int			win_h;
 	int			win_w;
-	t_player	*pla;
+	int			player_moves;
+	t_player	pla;
 	t_img		floor;
 	t_img		walls;
 	t_img		img;
 	t_img		exit;
 	t_map		map;
-	t_collect	*col;
-	int player_moves;
-} t_master;
-
-// typedef struct s_color
-// {
-// 	int	r;
-// 	int	g;
-// 	int	b;
-// 	int	a;
-// }	t_color;
+	t_collect	col;
+}		t_master;
 
 void	draw(t_master *master);
+void	put_img(t_master *master, t_img *img, t_map *map);
+void	get_map_cordinates(t_map *map, int x, int y);
+void	refresh_map(t_master *master, int newx, int newy);
 int		check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map, char *file_name);
-t_img	load_image(void	*mlx, char *path);
-void	init_avatars(t_master *master);
 void	init_master(t_master *master);
 void	init_map(t_map *map);
 void	init_exit(t_master *master);
-void	get_map_cordinates(t_map *map, int x, int y);
-void	render_img(t_master *master, t_img *img, t_map *map);
-int		ft_atoi(char *str);
-int		ft_strlen(char *str);
 int		is_valid(char c);
 void	error_msg(char *str);
-
 void	print_double_array(int	**array, int width, int height);
+int		width_map(int *width, char *buffer, int *counter);
+void	init_parse_info(t_parse_info *info);
+void	open_file(int *fd, char *fname, int opt);
+void	update_coll(t_master *master, int x, int y);
+int		not_wall(t_master *master, int x, int y);
+void	update_positions(t_master *master, int key);
+int		exit_hook(t_master *master);
+void	init_images(t_master *master);
 
 #endif

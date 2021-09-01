@@ -1,16 +1,5 @@
 #include "../includes/so_long.h"
 
-void	open_file(int *fd, char *fname,int opt)
-{
-	if (opt == 0)
-		*fd = open(fname, O_RDONLY);
-	if (*fd < 3)
-	{
-		printf("Error reading the file\n");
-		exit(0);
-	}
-}
-
 int	check_elem(char c, t_parse_info *info)
 {
 	if (c == '1')
@@ -19,29 +8,27 @@ int	check_elem(char c, t_parse_info *info)
 		return (0);
 	else if (c == 'P' || c == 'p')
 	{
-		info->player_exist++;
+		info->p_exists++;
 		return (2);
 	}
 	else if (c == 'c' || c == 'C')
 	{
-		info->collect_exist++;
+		info->c_exists++;
 		return (3);
 	}
 	else if (c == 'e' || c == 'E')
 	{
-		info->exit_exist++;
+		info->e_exists++;
 		return (4);
 	}
 	return (-1);
 }
 
-
 int	**alloc_map(int size, int size2)
 {
-	int i;
-	int **map2d;
-	printf("size %d size2 %d\n", size, size2);
-	
+	int	i;
+	int	**map2d;
+
 	map2d = (int **)malloc(sizeof(int *) * size + 1);
 	if (!map2d)
 		return (0);
@@ -57,91 +44,89 @@ int	**alloc_map(int size, int size2)
 
 void	get_array(t_map *map, char *fname, t_parse_info *info)
 {
-	t_file f;
-	int x;
-	int total;
+	t_file	f;
+	int		x;
 
 	open_file(&f.fd, fname, 0);
 	map->map2d = alloc_map(map->height, map->width);
 	f.index = 0;
-	total = 0;
-	while ((f.ret = read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
+	f.total = 0;
+	while ((read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
 	{
 		f.buffer[BUF_SIZE - 1] = 0;
 		while (f.index < map->height)
 		{
 			x = 0;
-			while (x < map->width && f.buffer[total] != '\n')
+			while (x < map->width && f.buffer[f.total] != '\n')
 			{
-				map->map2d[f.index][x] = check_elem(f.buffer[total], info);
+				map->map2d[f.index][x] = check_elem(f.buffer[f.total], info);
 				if (map->map2d[f.index][x] == -1)
-				{
-					printf("buffer %c\n", f.buffer[total]);
 					error_msg("Invalid char at map\n");
-				}
 				x++;
-				total++;
+				f.total++;
 			}
-			total++;
+			f.total++;
 			f.index++;
 		}
 	}
 }
 
-
-void	init_parse_info(t_parse_info *info)
+int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 {
-	info->collect_exist = 0;
-	info->exit_exist = 0;
-	info->player_exist = 0;
-}
+	int	i;
 
-
-int width_map(int *width, char *buffer)
-{
-	int i = 0;
-	while (buffer[i] != '\n')
+	i = -1;
+	while (++i < widht - 1)
 	{
-		(*width)++;
-		i++;
+		if (map->map2d[0][i] != 1)
+			error_msg("Top wall not closed\n");
+		if (map->map2d[height - 1][i] != 1)
+			error_msg("Bottom wall not closed\n");
 	}
-	return (i);
-}
-
-int	validate_array(t_map *map)
-{
-	(void)map;
+	i = -1;
+	while (++i < height - 1)
+	{
+		if (map->map2d[i][0] != 1)
+		{
+			printf("map2d %d i %d\n", map->map2d[i - 1][0], i);
+			error_msg("Left wall not closed\n");
+		}
+		if (map->map2d[i][widht - 1] != 1)
+			error_msg("Rigth wall not closed\n");
+	}
+	if (info.c_exists != 0 && info.e_exists != 0 && info.p_exists != 1)
+		error_msg("NOT A COLECT OR EXIT OR NO OR MORE THAN ONE PLAYER");
 	return (1);
 }
 
-
 void	parse_file(int fd, t_map *map, char *file_name)
 {
-	t_file f;
-	t_parse_info info;
+	t_file			f;
+	t_parse_info	info;
+	int	g_counter;
 
 	f.index = 0;
+	g_counter = 0;
 	init_parse_info(&info);
-	while ((f.ret = read(fd, &f.buffer, BUF_SIZE - 1)) > 0)
+	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
 		f.buffer[1023] = 0;
 		while (is_valid(f.buffer[f.index]))
 		{
-			// Se nao comecar com o mapa
-			if (f.index == 0)
-				f.index = width_map(&map->width, f.buffer);
+			printf("teste\n");
+			while (f.buffer[f.index] != '1' && g_counter == 0)
+				f.index++;
+			if (g_counter == 0)
+				f.index = width_map(&map->width, f.buffer, &g_counter);
 			if (f.buffer[f.index] == '\n')
 				map->height++;
 			f.index++;
 		}
-		printf("\twidth %d\n", map->width);
-		printf("\theight %d\n", map->height);
+		// printf("widht %d heigth %d\n", map->width, map->height);
 	}
 	close(fd);
 	map->total = map->width * map->height;
-	printf("total %d\n", map->total);
 	get_array(map, file_name, &info);
-
-	if (!validate_array(map))
+	if (!validate_array(map, map->width, map->height, info))
 		error_msg("Something wrong with the map");
 }

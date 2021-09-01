@@ -3,7 +3,8 @@
 
 # define BUF_SIZE 1024
 
-typedef struct s_img {
+typedef struct s_img
+{
 	void	*img_var;
 	char	*addr;
 	int		bits_per_pixel;
@@ -11,15 +12,15 @@ typedef struct s_img {
 	int		endian;
 	int		width;
 	int		height;
-}	t_img;
+}		t_img;
 
 typedef struct s_file
 {
-	int fd;
-	char buffer[BUF_SIZE];
-	int ret;
-	int	index;
-}	t_file;
-
+	int		fd;
+	char	buffer[BUF_SIZE];
+	int		ret;
+	int		index;
+	int		total;
+}		t_file;
 
 #endif

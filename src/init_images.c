@@ -1,63 +1,20 @@
 #include "../includes/so_long.h"
 
-void	init_collect(t_master *master)
+int	xmp_to_image(t_master *master, t_img *image, char *xpm_path)
 {
-	master->col->img = load_image(master->mlx, "pictures/apple.XPM");
-	if (!(master->img.img_var))
-	{
-		printf("Error in getting collectable image\n");
-		// free_all(master);
-	}
+	image->img_var = mlx_xpm_file_to_image(master->mlx, xpm_path, \
+		&image->width, &image->height);
+	image->width = 50;
+	if (!image->img_var)
+		return (0);
+	return (1);
 }
 
-void	init_floor(t_master *master)
+void	init_images(t_master *master)
 {
-	master->floor.img_var = mlx_xpm_file_to_image(master->mlx, "pictures/floor.XPM", &master->floor.width, &master->floor.height);
-	master->floor.addr = mlx_get_data_addr(master->floor.img_var,
-			&(master->floor.bits_per_pixel),
-			&(master->floor.line_length), &(master->floor.endian));
-}
-
-void	init_exit(t_master *master)
-{
-	master->exit.img_var = mlx_xpm_file_to_image(master->mlx, "pictures/pacman.XPM", &master->exit.width, &master->exit.height);
-	master->exit.addr = mlx_get_data_addr(master->exit.img_var,
-			&(master->exit.bits_per_pixel),
-			&(master->exit.line_length), &(master->exit.endian));
-}
-
-
-void	init_player(t_master *master)
-{
-	master->pla->img = load_image(master->mlx, "pictures/Mario.XPM");
-	if (!(master->img.img_var))
-	{
-		printf("Error in getting player image\n");
-		// free_all(master);
-	}
-}
-
-void	init_walls(t_master *master)
-{
-	master->walls.img_var = mlx_xpm_file_to_image(master->mlx, "pictures/walls.XPM", &master->walls.width, &master->walls.height);
-	master->walls.addr = mlx_get_data_addr(master->walls.img_var,
-			&(master->walls.bits_per_pixel),
-			&(master->walls.line_length), &(master->walls.endian));
-}
-
-void	init_avatars(t_master *master)
-{
-	init_player(master);
-	printf("teste2\n");
-
-	init_collect(master);
-	printf("teste3\n");
-
-	init_floor(master);
-	printf("teste4\n");
-
-	init_walls(master);
-	printf("teste5\n");
-
-	init_exit(master);
+	xmp_to_image(master, &master->pla.img, "pictures/Mario.XPM");
+	xmp_to_image(master, &master->col.img, "pictures/apple.XPM");
+	xmp_to_image(master, &master->floor, "pictures/floor.XPM");
+	xmp_to_image(master, &master->walls, "pictures/walls.XPM");
+	xmp_to_image(master, &master->exit, "pictures/pacman.XPM");
 }
