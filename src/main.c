@@ -2,16 +2,24 @@
 
 int	game_finished(t_master *master, int x, int y)
 {
-	if (master->map.map2d[y][x] == E && master->col.number_of_c == 0)
+	if (master->map->map2d[y][x] == E && master->col.number_of_c == 0)
 		return (1);
 	else
 		return (0);
+}
+
+void	width_and_height()
+{
+	
 }
 
 int	player_mov(int key, t_master *master)
 {
 	int	x;
 	int	y;
+
+	width_and_height(&master->map);
+	printf("widht %d heigth %d\n", master->map->width, master->map->height);
 
 	x = master->pla.last_pos.x;
 	y = master->pla.last_pos.y;
@@ -23,6 +31,7 @@ int	player_mov(int key, t_master *master)
 		update_positions(master, key);
 		if (not_wall(master, master->pla.pos.x, master->pla.pos.y))
 		{
+			printf("teste 2\n");
 			update_coll(master, master->pla.pos.x, master->pla.pos.y);
 			refresh_map(master, master->pla.pos.x, master->pla.pos.y);
 			ft_putnbr_fd(master->player_moves, 1);
@@ -38,8 +47,10 @@ void	start_game(t_master *m)
 {
 	m->mlx = mlx_init();
 	m->win = mlx_new_window(m->mlx, WIN_WIDTH, WIN_HEIGHT, "fds");
+
 	init_images(m);
 	draw(m);
+	printf("widht %d heigth %d 2\n", m->map->width, m->map->height);
 	mlx_key_hook(m->win, player_mov, &m);
 	mlx_loop(m->mlx);
 }
@@ -56,7 +67,7 @@ int	main(int ac, char **av)
 	init_map(&master.map);
 	init_master(&master);
 	fd = open(av[1], O_RDONLY);
-	parse_file(fd, &master.map, av[1]);
+	parse_file(fd, master.map, av[1]);
 	close(fd);
 	start_game(&master);
 }

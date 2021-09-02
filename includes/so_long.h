@@ -75,7 +75,7 @@ typedef struct s_master
 	t_img		walls;
 	t_img		img;
 	t_img		exit;
-	t_map		map;
+	t_map		*map;
 	t_collect	col;
 }		t_master;
 
@@ -86,7 +86,7 @@ void	refresh_map(t_master *master, int newx, int newy);
 int		check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map, char *file_name);
 void	init_master(t_master *master);
-void	init_map(t_map *map);
+void	init_map(t_map **map);
 void	init_exit(t_master *master);
 int		is_valid(char c);
 void	error_msg(char *str);

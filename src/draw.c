@@ -8,25 +8,32 @@ void	draw(t_master *master)
 	t_img	*img;
 
 	y = -1;
-	while (++y < master->map.height)
+	while (++y < master->map->height)
 	{
 		x = -1;
-		while (++x < master->map.width)
+		while (++x < master->map->width)
 		{
-			printf("teste 6\n");
-			get_map_cordinates(&master->map, x, y);
-			if (master->map.map2d[y][x] == WALL)
+			get_map_cordinates(master->map, x, y);
+			if (master->map->map2d[y][x] == WALL)
 				img = &master->walls;
-			else if (master->map.map2d[y][x] == FLOOR)
+			else if (master->map->map2d[y][x] == FLOOR)
 				img = &master->floor;
-			else if (master->map.map2d[y][x] == C)
+			else if (master->map->map2d[y][x] == C)
+			{
+				put_img(master, &master->floor, master->map);
 				img = &master->col.img;
-			else if (master->map.map2d[y][x] == P)
+			}
+			else if (master->map->map2d[y][x] == P)
+			{
+				put_img(master, &master->floor, master->map);
 				img = &master->pla.img;
-			else if (master->map.map2d[y][x] == E)
+			}
+			else if (master->map->map2d[y][x] == E)
+			{
+				put_img(master, &master->floor, master->map);
 				img = &master->exit;
-			put_img(master, img, &master->map);
+			}
+			put_img(master, img, master->map);
 		}
 	}
-	printf("teste 7\n");
 }

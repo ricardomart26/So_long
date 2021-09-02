@@ -107,13 +107,13 @@ void	parse_file(int fd, t_map *map, char *file_name)
 
 	f.index = 0;
 	g_counter = 0;
+	printf("teste 3\n");
 	init_parse_info(&info);
 	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
 		f.buffer[1023] = 0;
 		while (is_valid(f.buffer[f.index]))
 		{
-			printf("teste\n");
 			while (f.buffer[f.index] != '1' && g_counter == 0)
 				f.index++;
 			if (g_counter == 0)
@@ -122,8 +122,9 @@ void	parse_file(int fd, t_map *map, char *file_name)
 				map->height++;
 			f.index++;
 		}
-		// printf("widht %d heigth %d\n", map->width, map->height);
+		printf("widht %d heigth %d\n", map->width, map->height);
 	}
+	printf("teste 4\n");
 	close(fd);
 	map->total = map->width * map->height;
 	get_array(map, file_name, &info);

@@ -17,9 +17,9 @@ int	exit_hook(t_master *master)
 	int	i;
 
 	i = -1;
-	while (++i < master->win_w)
-		free(master->map.map2d[i]);
-	free(master->map.map2d);
+	while (++i < WIN_WIDTH)
+		free(master->map->map2d[i]);
+	free(master->map->map2d);
 	mlx_destroy_image(master->mlx, master->floor.img_var);
 	mlx_destroy_image(master->mlx, master->exit.img_var);
 	mlx_destroy_image(master->mlx, master->col.img.img_var);
@@ -56,13 +56,14 @@ void	update_positions(t_master *master, int key)
 
 int	not_wall(t_master *master, int x, int y)
 {
-	return (x < master->win_h && y < master->win_w \
-		&& master->map.map2d[y][x] != WALL);
+	printf("map width %d map height %d\n", master->map->width, master->map->height);
+	return (x < master->map->width && y < master->map->height \
+		&& master->map->map2d[y][x] != WALL);
 }
 
 void	update_coll(t_master *master, int x, int y)
 {
-	if (master->map.map2d[y][x] == C)
+	if (master->map->map2d[y][x] == C)
 		master->col.number_of_c--;
 	master->player_moves++;
 }
@@ -73,18 +74,19 @@ void	refresh_map(t_master *master, int newx, int newy)
 	int		x;
 	int		y;
 
+	printf("REFRESHED THE MAP\n");
 	x = master->pla.last_pos.x;
 	y = master->pla.last_pos.y;
-	if (master->map.map2d[y][x] == E)
+	if (master->map->map2d[y][x] == E)
 		img = &master->exit;
 	else
 		img = &master->floor;
-	get_map_cordinates(&master->map, x, y);
-	put_img(master, img, &master->map);
-	if (master->map.map2d[newy][newx] == E)
+	get_map_cordinates(master->map, x, y);
+	put_img(master, img, master->map);
+	if (master->map->map2d[newy][newx] == E)
 		img = &master->exit;
 	else
 		img = &master->pla.img;
-	get_map_cordinates(&master->map, newx, newy);
-	put_img(master, img, &master->map);
+	get_map_cordinates(master->map, newx, newy);
+	put_img(master, img, master->map);
 }
