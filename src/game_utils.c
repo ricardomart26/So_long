@@ -56,8 +56,8 @@ void	update_positions(t_master *master, int key)
 
 int	not_wall(t_master *master, int x, int y)
 {
-	printf("map width %d map height %d\n", master->map->width, master->map->height);
-	return (x < master->map->width && y < master->map->height \
+	printf("map width %d map height %d x %d y %d\n", g_struct.width, g_struct.height, x, y);
+	return (x < g_struct.width && y < g_struct.height \
 		&& master->map->map2d[y][x] != WALL);
 }
 

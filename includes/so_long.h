@@ -27,6 +27,15 @@
 # define MV_R 2
 # define MV_L 0
 
+
+typedef struct s_global
+{
+	int	height;
+	int	width;
+}		t_global;
+
+t_global g_struct;
+
 typedef struct s_vector
 {
 	int	x;

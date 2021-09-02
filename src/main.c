@@ -8,18 +8,27 @@ int	game_finished(t_master *master, int x, int y)
 		return (0);
 }
 
-void	width_and_height()
-{
+// void	width_and_height(t_map **map, int **map2d)
+// {
+// 	int width;
+// 	int height;
 	
-}
+// 	printf("Teste\n");
+// 	width = sizeof(map2d) / sizeof(map2d[0]);
+// 	height = sizeof(map2d[0]) / sizeof(map2d[0][0]);
+	
+// 	printf("widht %d heigth %d teste\n", width, height);
+	
+
+// }
 
 int	player_mov(int key, t_master *master)
 {
 	int	x;
 	int	y;
 
-	width_and_height(&master->map);
-	printf("widht %d heigth %d\n", master->map->width, master->map->height);
+	// width_and_height(&master->map, master->map->map2d);
+	printf("widht %d heigth %d teste\n", g_struct.width, g_struct.height);
 
 	x = master->pla.last_pos.x;
 	y = master->pla.last_pos.y;
@@ -50,8 +59,8 @@ void	start_game(t_master *m)
 
 	init_images(m);
 	draw(m);
-	printf("widht %d heigth %d 2\n", m->map->width, m->map->height);
-	mlx_key_hook(m->win, player_mov, &m);
+	printf("widht %d heigth %d map2d %d\n", m->map->width, m->map->height, m->map->map2d[1][0]);
+	mlx_key_hook(m->win, player_mov, m);
 	mlx_loop(m->mlx);
 }
 

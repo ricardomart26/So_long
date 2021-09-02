@@ -122,6 +122,8 @@ void	parse_file(int fd, t_map *map, char *file_name)
 				map->height++;
 			f.index++;
 		}
+		g_struct.width = map->width;
+		g_struct.height = map->height;
 		printf("widht %d heigth %d\n", map->width, map->height);
 	}
 	printf("teste 4\n");
