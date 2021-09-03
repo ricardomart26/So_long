@@ -99,7 +99,7 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	return (1);
 }
 
-void	parse_file(int fd, t_map *map, char *file_name)
+t_parse_info	parse_file(int fd, t_map *map, char *file_name)
 {
 	t_file			f;
 	t_parse_info	info;
@@ -107,7 +107,6 @@ void	parse_file(int fd, t_map *map, char *file_name)
 
 	f.index = 0;
 	g_counter = 0;
-	printf("teste 3\n");
 	init_parse_info(&info);
 	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
@@ -126,10 +125,10 @@ void	parse_file(int fd, t_map *map, char *file_name)
 		g_struct.height = map->height;
 		printf("widht %d heigth %d\n", map->width, map->height);
 	}
-	printf("teste 4\n");
 	close(fd);
 	map->total = map->width * map->height;
 	get_array(map, file_name, &info);
 	if (!validate_array(map, map->width, map->height, info))
 		error_msg("Something wrong with the map");
+	return (info);
 }

@@ -58,7 +58,8 @@ int	not_wall(t_master *master, int x, int y)
 {
 	printf("map width %d map height %d x %d y %d\n", g_struct.width, g_struct.height, x, y);
 	return (x < g_struct.width && y < g_struct.height \
-		&& master->map->map2d[y][x] != WALL);
+		&& master->map->map2d[y][x] != WALL && (master->map->map2d[y][x] != E \
+		||	master->col.number_of_c == 0));
 }
 
 void	update_coll(t_master *master, int x, int y)
@@ -78,13 +79,13 @@ void	refresh_map(t_master *master, int newx, int newy)
 	x = master->pla.last_pos.x;
 	y = master->pla.last_pos.y;
 	if (master->map->map2d[y][x] == E)
-		img = &master->exit;
+		img = &master->start_rocket;
 	else
 		img = &master->floor;
 	get_map_cordinates(master->map, x, y);
 	put_img(master, img, master->map);
 	if (master->map->map2d[newy][newx] == E)
-		img = &master->exit;
+		img = &master->start_rocket;
 	else
 		img = &master->pla.img;
 	get_map_cordinates(master->map, newx, newy);

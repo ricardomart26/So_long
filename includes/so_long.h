@@ -10,16 +10,15 @@
 # include "../minilibx_mms_20200219/mlx.h"
 # include "../Libft/libft.h"
 
-# define IMG_HEIGHT	50
-# define IMG_WIDTH	50
-# define WIN_WIDTH	1000
+# define IMG_HEIGHT	78
+# define IMG_WIDTH	78
+# define WIN_WIDTH	1500
 # define WIN_HEIGHT	1000
 # define FLOOR 0
 # define WALL 1
 # define P 2
 # define C 3
 # define E 4
-# define ESC 53
 # define IMG_SIZE 64
 # define ESC 53
 # define MV_U 13
@@ -86,6 +85,12 @@ typedef struct s_master
 	t_img		exit;
 	t_map		*map;
 	t_collect	col;
+	t_img		rocket;
+	t_img		start_rocket;
+	t_img		fly_rocket;
+	t_img		lava_ground;
+	t_img		lava;
+t_img		moon;
 }		t_master;
 
 void	draw(t_master *master);
@@ -93,7 +98,7 @@ void	put_img(t_master *master, t_img *img, t_map *map);
 void	get_map_cordinates(t_map *map, int x, int y);
 void	refresh_map(t_master *master, int newx, int newy);
 int		check_file(char *file, char *ext);
-void	parse_file(int fd, t_map *map, char *file_name);
+t_parse_info	parse_file(int fd, t_map *map, char *file_name);
 void	init_master(t_master *master);
 void	init_map(t_map **map);
 void	init_exit(t_master *master);
