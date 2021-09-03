@@ -21,16 +21,20 @@ int	exit_hook(t_master *master)
 		free(master->map->map2d[i]);
 	free(master->map->map2d);
 	mlx_destroy_image(master->mlx, master->floor.img_var);
-	mlx_destroy_image(master->mlx, master->exit.img_var);
+	mlx_destroy_image(master->mlx, master->rocket.img_var);
 	mlx_destroy_image(master->mlx, master->col.img.img_var);
-	mlx_destroy_image(master->mlx, master->walls.img_var);
+	mlx_destroy_image(master->mlx, master->lava_ground.img_var);
 	mlx_destroy_image(master->mlx, master->pla.img.img_var);
+	mlx_destroy_image(master->mlx, master->enemy.img.img_var);
+	mlx_destroy_image(master->mlx, master->final.img_var);
+	mlx_destroy_image(master->mlx, master->life.img_var);
+	mlx_destroy_image(master->mlx, master->black.img_var);
 	mlx_destroy_window(master->mlx, master->win);
 	exit(0);
 	return (1);
 }
 
-int	win(int keycode, t_master *master)
+int	winner(int keycode, t_master *master)
 {
 	master->map->pos_x_y.y = WIN_HEIGHT / 4 - 200;
 	master->map->pos_x_y.x = WIN_WIDTH / 4 - 250;
@@ -38,8 +42,6 @@ int	win(int keycode, t_master *master)
 	put_img(master, &master->final, master->map);
 	if (keycode == ENTER || keycode == ESC)
 		exit_hook(master);
-
-	printf("keycode %d\n", keycode);
 	return (1);
 }
 
@@ -49,8 +51,7 @@ int	exit_win_hook(t_master *master)
 
 	i = -1;
 
-
-	mlx_key_hook(master->win, win, master);
+	mlx_key_hook(master->win, winner, master);
 	mlx_loop(master->mlx);
 	return (0);
 }
@@ -61,10 +62,23 @@ void	update_positions(t_master *master, int key)
 	{
 		master->pla.pos.y = master->pla.last_pos.y - 1;
 		master->pla.pos.x = master->pla.last_pos.x;
-		if (not_wall(master, master->enemy.pos.x, master->enemy.pos.y))
-		{
-			master->enemy.pos.y = master->enemy.last_pos.y - 1;
-			master->enemy.pos.x = master->enemy.last_pos.x;
+		if (not_wall(master, master->enemy.last_pos.x, master->enemy.last_pos.y + 1))
+		{		
+			if (master->enemy.pos.y < master->pla.pos.y)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y + 1;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
+			else if (master->enemy.pos.y == master->pla.pos.y)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
+			else
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y - 1;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
 		}
 		else
 		{
@@ -77,26 +91,51 @@ void	update_positions(t_master *master, int key)
 		
 		master->pla.pos.y = master->pla.last_pos.y + 1;
 		master->pla.pos.x = master->pla.last_pos.x;
-		if (not_wall(master, master->enemy.pos.x, master->enemy.pos.y))
+		if (not_wall(master, master->enemy.last_pos.x, master->enemy.last_pos.y - 1))
 		{
-			master->enemy.pos.y = master->enemy.last_pos.y + 1;
-			master->enemy.pos.x = master->enemy.last_pos.x;
+			if (master->enemy.last_pos.y > master->pla.last_pos.y)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y - 1;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
+			else if (master->enemy.last_pos.y == master->pla.last_pos.y)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
+			else
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y + 1;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
 		}
 		else
 		{
-			printf("you hit a wall\n");
-			master->enemy.pos.x = master->enemy.last_pos.x;
 			master->enemy.pos.y = master->enemy.last_pos.y;
+			master->enemy.pos.x = master->enemy.last_pos.x;
 		}
 	}
 	else if (key == MV_L)
 	{
 		master->pla.pos.x = master->pla.last_pos.x - 1;
 		master->pla.pos.y = master->pla.last_pos.y;
-		if (not_wall(master, master->enemy.pos.x, master->enemy.pos.y))
+		if (not_wall(master, master->enemy.last_pos.x - 1, master->enemy.last_pos.y))
 		{
-			master->enemy.pos.x = master->enemy.last_pos.x - 1;
-			master->enemy.pos.y = master->enemy.last_pos.y;
+			if (master->enemy.last_pos.x < master->pla.last_pos.x)
+			{
+				master->enemy.pos.x = master->enemy.last_pos.x + 1;
+				master->enemy.pos.y = master->enemy.last_pos.y;
+			}
+			else if (master->enemy.last_pos.x == master->pla.last_pos.x)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y;
+				master->enemy.pos.x = master->enemy.last_pos.x;
+			}
+			else
+			{
+				master->enemy.pos.x = master->enemy.last_pos.x - 1;
+				master->enemy.pos.y = master->enemy.last_pos.y;
+			}
 		}
 		else
 		{
@@ -108,12 +147,17 @@ void	update_positions(t_master *master, int key)
 	{
 		master->pla.pos.x = master->pla.last_pos.x + 1;
 		master->pla.pos.y = master->pla.last_pos.y;
-		if (not_wall(master, master->enemy.pos.x, master->enemy.pos.y))
+		if (not_wall(master, master->enemy.last_pos.x + 1, master->enemy.last_pos.y))
 		{
-			if (master->enemy.pos.x > master->pla.pos.x)
+			if (master->enemy.last_pos.x > master->pla.last_pos.x)
 			{
 				master->enemy.pos.x = master->enemy.last_pos.x - 1;
 				master->enemy.pos.y = master->enemy.last_pos.y;
+			}
+			else if (master->enemy.last_pos.x == master->pla.last_pos.x)
+			{
+				master->enemy.pos.y = master->enemy.last_pos.y;
+				master->enemy.pos.x = master->enemy.last_pos.x;
 			}
 			else
 			{
@@ -138,8 +182,7 @@ int	not_wall(t_master *master, int x, int y)
 
 void	update_coll(t_master *master, int x, int y)
 {
-	printf("x %d y %d ex %d ey %d\n", x, y, master->enemy.pos.x, master->enemy.pos.y);
-	if (master->map->map2d[y][x] == C)
+	if (master->map->map2d[y][x] == C && master->col.number_of_c != 0)
 		master->col.number_of_c--;
 	master->player_moves++;
 }
@@ -176,14 +219,24 @@ void	refresh_enemy(t_master *master, int newx, int newy)
 	x = master->enemy.last_pos.x;
 	y = master->enemy.last_pos.y;
 	get_map_cordinates(master->map, x, y);
-	img = &master->floor;
-	put_img(master, img, master->map);
+	if (master->map->map2d[y][x] == WALL)
+	{
+		img = &master->lava_ground;
+		put_img(master, img, master->map);
+	}
+	else
+	{
+		img = &master->floor;
+		put_img(master, img, master->map);
+	}
 	if (master->map->map2d[y][x] == C)
 	{
 		img = &master->col.img;
+		if (master->col.total != master->col.number_of_c)
+			master->col.number_of_c++;
 		put_img(master, img, master->map);
 	}
-	img = &master->enemy.img;
 	get_map_cordinates(master->map, newx, newy);
+	img = &master->enemy.img;
 	put_img(master, img, master->map);
 }

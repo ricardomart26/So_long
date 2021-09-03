@@ -11,7 +11,6 @@ void	erase_lives(t_master *master)
 
 	fake_master.map->pos_x_y.x = master->map->width * IMG_WIDTH + 100;
 	fake_master.map->pos_x_y.y = 0;
-	printf("erase lifes %d\n\n", master->lives);
 	master->player_moves = 0;
 	while (counter < 3)
 	{

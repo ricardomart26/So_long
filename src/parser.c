@@ -89,10 +89,7 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	while (++i < height - 1)
 	{
 		if (map->map2d[i][0] != 1)
-		{
-			printf("map2d %d i %d\n", map->map2d[i - 1][0], i);
 			error_msg("Left wall not closed\n");
-		}
 		if (map->map2d[i][widht - 1] != 1)
 			error_msg("Rigth wall not closed\n");
 	}
@@ -125,10 +122,8 @@ t_parse_info	parse_file(int fd, t_map *map, char *file_name)
 		}
 		g_struct.width = map->width;
 		g_struct.height = map->height;
-		printf("widht %d heigth %d\n", map->width, map->height);
 	}
 	close(fd);
-	map->total = map->width * map->height;
 	get_array(map, file_name, &info);
 	if (!validate_array(map, map->width, map->height, info))
 		error_msg("Something wrong with the map");

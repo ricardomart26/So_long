@@ -10,8 +10,8 @@
 # include "../minilibx_mms_20200219/mlx.h"
 # include "../Libft/libft.h"
 
-# define IMG_HEIGHT	78
-# define IMG_WIDTH	78
+# define IMG_HEIGHT	80
+# define IMG_WIDTH	80
 # define WIN_WIDTH	1500
 # define WIN_HEIGHT	1000
 # define FLOOR 0
@@ -27,7 +27,6 @@
 # define MV_R 2
 # define MV_L 0
 # define ENTER 36
-
 
 typedef struct s_global
 {
@@ -62,24 +61,17 @@ typedef struct s_map
 typedef struct s_player
 {
 	t_img		img;
-	t_vector	first_pos;
 	t_vector	pos;
 	t_vector	last_pos;
 }		t_player;
-
-typedef struct s_enemy
-{
-	t_img		img;
-	t_vector	first_pos;
-	t_vector	pos;
-	t_vector	last_pos;
-}		t_enemy;
 
 typedef struct s_collect
 {
 	t_img	img;
 	int		in_map;
 	int		number_of_c;
+	bool	is_collected;
+	int		total;
 }		t_collect;
 
 typedef struct s_master
@@ -91,10 +83,8 @@ typedef struct s_master
 	int			player_moves;
 	int			lives;
 	t_player	pla;
+	t_player	enemy;
 	t_img		floor;
-	t_img		walls;
-	t_img		img;
-	t_img		exit;
 	t_map		*map;
 	t_collect	col;
 	t_img		rocket;
@@ -102,7 +92,6 @@ typedef struct s_master
 	t_img		lava_ground;
 	t_img		life;
 	t_img		moon;
-	t_enemy		enemy;
 	t_img		black;
 }		t_master;
 
@@ -120,7 +109,7 @@ void	init_master(t_master *master);
 void	init_map(t_map **map);
 void	init_exit(t_master *master);
 int		is_valid(char c);
-void	error_msg(char *str);
+void	error_msg(const	char *str);
 void	print_double_array(int	**array, int width, int height);
 int		width_map(int *width, char *buffer, int *counter);
 void	init_parse_info(t_parse_info *info);
@@ -130,5 +119,8 @@ int		not_wall(t_master *master, int x, int y);
 void	update_positions(t_master *master, int key);
 int		exit_hook(t_master *master);
 void	init_images(t_master *master);
+void	start_game(t_master *m);
+int		game_finished(t_master *master, int x, int y);
+int		enemy_touch(t_master *master, int x, int y);
 
 #endif
