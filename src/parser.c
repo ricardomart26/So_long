@@ -21,6 +21,8 @@ int	check_elem(char c, t_parse_info *info)
 		info->e_exists++;
 		return (4);
 	}
+	else if (c == 'd' || c == 'D')
+		return (5);
 	return (-1);
 }
 

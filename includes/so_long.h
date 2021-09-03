@@ -19,12 +19,14 @@
 # define P 2
 # define C 3
 # define E 4
+# define D 5
 # define IMG_SIZE 64
 # define ESC 53
 # define MV_U 13
 # define MV_D 1
 # define MV_R 2
 # define MV_L 0
+# define ENTER 36
 
 
 typedef struct s_global
@@ -60,9 +62,18 @@ typedef struct s_map
 typedef struct s_player
 {
 	t_img		img;
+	t_vector	first_pos;
 	t_vector	pos;
 	t_vector	last_pos;
 }		t_player;
+
+typedef struct s_enemy
+{
+	t_img		img;
+	t_vector	first_pos;
+	t_vector	pos;
+	t_vector	last_pos;
+}		t_enemy;
 
 typedef struct s_collect
 {
@@ -78,6 +89,7 @@ typedef struct s_master
 	int			win_h;
 	int			win_w;
 	int			player_moves;
+	int			lives;
 	t_player	pla;
 	t_img		floor;
 	t_img		walls;
@@ -86,13 +98,18 @@ typedef struct s_master
 	t_map		*map;
 	t_collect	col;
 	t_img		rocket;
-	t_img		start_rocket;
-	t_img		fly_rocket;
+	t_img		final;
 	t_img		lava_ground;
-	t_img		lava;
-t_img		moon;
+	t_img		life;
+	t_img		moon;
+	t_enemy		enemy;
+	t_img		black;
 }		t_master;
 
+void	refresh_enemy(t_master *master, int newx, int newy);
+void	erase_lives(t_master *master);
+void	put_lives(t_master *master);
+int		exit_win_hook(t_master *master);
 void	draw(t_master *master);
 void	put_img(t_master *master, t_img *img, t_map *map);
 void	get_map_cordinates(t_map *map, int x, int y);

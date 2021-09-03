@@ -14,12 +14,13 @@ void	init_images(t_master *master)
 {
 	xmp_to_image(master, &master->pla.img, "pictures/astronaut.XPM");
 	xmp_to_image(master, &master->col.img, "pictures/gasoline.XPM");
+	xmp_to_image(master, &master->enemy.img, "pictures/cthulhu.XPM");
 	xmp_to_image(master, &master->floor, "pictures/lunar2.XPM");
 	xmp_to_image(master, &master->rocket, "pictures/space-ship2.XPM");
-	// xmp_to_image(master, &master->fly_rocket, "pictures/flying-rocket.XPM");
-	xmp_to_image(master, &master->start_rocket, "pictures/space-ship2.XPM");
+	xmp_to_image(master, &master->final, "pictures/you-win-text.XPM");
 	xmp_to_image(master, &master->lava_ground, "pictures/lava.XPM");
-	// xmp_to_image(master, &master->lava, "pictures/lava.XPM");
 	xmp_to_image(master, &master->moon, "pictures/lunar.XPM");
+	xmp_to_image(master, &master->life, "pictures/lives.XPM");
+	xmp_to_image(master, &master->black, "pictures/black.XPM");
 }
 //moon_floor

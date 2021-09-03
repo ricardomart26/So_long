@@ -5,6 +5,7 @@ void	init_master(t_master *master)
 	master->mlx = NULL;
 	master->win = NULL;
 	master->player_moves = 0;
+	master->lives = 3;
 }
 
 void	init_map(t_map **map)
