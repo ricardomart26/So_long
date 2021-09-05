@@ -1,75 +1,45 @@
 #include "../includes/so_long.h"
 
-void	erase_lives(t_master *master)
+t_img	*fuck_norm3(t_master *m, t_vector vec, t_img my_img, int option)
 {
-	t_master fake_master;
-	int counter;
-
-	counter = 0;
-	init_map(&fake_master.map);
-	init_master(&fake_master);
-
-	fake_master.map->pos_x_y.x = master->map->width * IMG_WIDTH + 100;
-	fake_master.map->pos_x_y.y = 0;
-	master->player_moves = 0;
-	while (counter < 3)
-	{
-		fake_master.map->pos_x_y.y += 50;
-		put_img(master, &master->black, fake_master.map);
-		counter++;
-	}
-}
-
-void	draw(t_master *master)
-{
-	int		y;
-	int		x;
 	t_img	*img;
 
-	y = -1;
-	erase_lives(master);
-	put_lives(master);
-	if (master->lives == 0)
-		exit_hook(master);
-	while (++y < master->map->height)
+	put_img(m, &m->moon, m->map);
+	img = &my_img;
+	if (option == P)
+		add_last_position(&m->pla, vec.x, vec.y);
+	return (img);
+}
+
+void	add_last_position(t_player *player, int x, int y)
+{
+	player->last.x = x;
+	player->last.y = y;
+}
+
+void	draw(t_master *m)
+{
+	t_vector	vec;
+	t_img		*img;
+
+	vec.y = -1;
+	while (++vec.y < m->map->height)
 	{
-		x = -1;
-		while (++x < master->map->width)
+		vec.x = -1;
+		while (++vec.x < m->map->width)
 		{
-			get_map_cordinates(master->map, x, y);
-			if (master->map->map2d[y][x] == WALL)
-				img = &master->lava_ground;
-			else if (master->map->map2d[y][x] == FLOOR)
-				img = &master->moon;
-			else if (master->map->map2d[y][x] == C)
-			{
-				put_img(master, &master->moon, master->map);
-				img = &master->col.img;
-			}
-			else if (master->map->map2d[y][x] == P)
-			{
-				put_img(master, &master->moon, master->map);
-				master->pla.pos.x = x;
-				master->pla.pos.y = y;
-				master->pla.last_pos.x = x;
-				master->pla.last_pos.y = y;
-				img = &master->pla.img;
-			}
-			else if (master->map->map2d[y][x] == E)
-			{
-				put_img(master, &master->moon, master->map);
-				img = &master->rocket;
-			}
-			else if (master->map->map2d[y][x] == D)
-			{
-				put_img(master, &master->moon, master->map);
-				master->enemy.pos.x = x;
-				master->enemy.pos.y = y;
-				master->enemy.last_pos.x = x;
-				master->enemy.last_pos.y = y;
-				img = &master->enemy.img;
-			}
-			put_img(master, img, master->map);
+			get_map_cordinates(m->map, vec.x, vec.y);
+			if (m->map->map2d[vec.y][vec.x] == WALL)
+				img = &m->lava_ground;
+			else if (m->map->map2d[vec.y][vec.x] == FLOOR)
+				img = &m->moon;
+			else if (m->map->map2d[vec.y][vec.x] == C)
+				img = fuck_norm3(m, vec, m->col.img, C);
+			if (m->map->map2d[vec.y][vec.x] == P)
+				img = fuck_norm3(m, vec, m->pla.img, P);
+			else if (m->map->map2d[vec.y][vec.x] == E)
+				img = fuck_norm3(m, vec, m->rocket, E);
+			put_img(m, img, m->map);
 		}
 	}
 }

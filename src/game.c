@@ -2,10 +2,10 @@
 
 void	update_pos(t_master *master)
 {
-	master->pla.last_pos.x = master->pla.pos.x;
-	master->pla.last_pos.y = master->pla.pos.y;
-	master->enemy.last_pos.x = master->enemy.pos.x;
-	master->enemy.last_pos.y = master->enemy.pos.y;
+	master->pla.last.x = master->pla.pos.x;
+	master->pla.last.y = master->pla.pos.y;
+	master->enemy.last.x = master->enemy.pos.x;
+	master->enemy.last.y = master->enemy.pos.y;
 }
 
 int	game_eng(int key, t_master *m)
@@ -19,12 +19,6 @@ int	game_eng(int key, t_master *m)
 		{
 			update_coll(m, m->pla.pos.x, m->pla.pos.y);
 			refresh_map(m, m->pla.pos.x, m->pla.pos.y);
-			refresh_enemy(m, m->enemy.pos.x, m->enemy.pos.y);
-			if (enemy_touch(m, m->pla.last_pos.x, m->pla.last_pos.y))
-			{
-				m->lives--;
-				draw(m);
-			}
 			ft_putnbr_fd(m->player_moves, 1);
 			ft_putchar_fd('\n', 1);
 			if (game_finished(m, m->pla.pos.x, m->pla.pos.y))
@@ -35,29 +29,10 @@ int	game_eng(int key, t_master *m)
 	return (0);
 }
 
-void	put_lives(t_master *master)
-{
-	int lives;
-	t_master fake_master;
-
-	init_map(&fake_master.map);
-	init_master(&fake_master);
-	fake_master.map->pos_x_y.x = master->map->width * IMG_WIDTH + 100;
-	fake_master.map->pos_x_y.y = 0;
-	lives = master->lives;
-	while (lives != 0)
-	{
-		fake_master.map->pos_x_y.y += 50;
-		put_img(master, &master->life, fake_master.map);
-		lives--;
-	}
-}
-
 void	start_game(t_master *m)
 {
 	m->mlx = mlx_init();
 	m->win = mlx_new_window(m->mlx, WIN_WIDTH, WIN_HEIGHT, "fds");
-
 	init_images(m);
 	draw(m);
 	mlx_key_hook(m->win, game_eng, m);

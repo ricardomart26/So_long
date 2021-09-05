@@ -1,5 +1,5 @@
 
-CC = gcc -Wall -Werror=implicit-function-declaration -Wextra -fpie
+CC = gcc -Wall -Werror=implicit-function-declaration -Wextra -fpie -fsanitize=address
 
 LIBX = -lmlx -framework OpenGL -framework AppKit
 

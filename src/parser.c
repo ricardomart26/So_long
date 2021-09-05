@@ -21,8 +21,6 @@ int	check_elem(char c, t_parse_info *info)
 		info->e_exists++;
 		return (4);
 	}
-	else if (c == 'd' || c == 'D')
-		return (5);
 	return (-1);
 }
 
@@ -93,29 +91,27 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 		if (map->map2d[i][widht - 1] != 1)
 			error_msg("Rigth wall not closed\n");
 	}
-	if (info.c_exists != 0 && info.e_exists != 0 && info.p_exists != 1)
+	if (info.c_exists == 0 || info.e_exists == 0 || info.p_exists != 1)
 		error_msg("NOT A COLECT OR EXIT OR NO OR MORE THAN ONE PLAYER");
 	return (1);
 }
 
-t_parse_info	parse_file(int fd, t_map *map, char *file_name)
+void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 {
 	t_file			f;
-	t_parse_info	info;
-	int	g_counter;
+	int				counter;
 
 	f.index = 0;
-	g_counter = 0;
-	init_parse_info(&info);
+	counter = 0;
 	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
 		f.buffer[1023] = 0;
 		while (is_valid(f.buffer[f.index]))
 		{
-			while (f.buffer[f.index] != '1' && g_counter == 0)
+			while (f.buffer[f.index] != '1' && counter == 0)
 				f.index++;
-			if (g_counter == 0)
-				f.index = width_map(&map->width, f.buffer, &g_counter);
+			if (counter == 0)
+				f.index = width_map(&map->width, f.buffer, &counter);
 			if (f.buffer[f.index] == '\n')
 				map->height++;
 			f.index++;
@@ -124,8 +120,7 @@ t_parse_info	parse_file(int fd, t_map *map, char *file_name)
 		g_struct.height = map->height;
 	}
 	close(fd);
-	get_array(map, file_name, &info);
-	if (!validate_array(map, map->width, map->height, info))
+	get_array(map, file_name, info);
+	if (!validate_array(map, map->width, map->height, *info))
 		error_msg("Something wrong with the map");
-	return (info);
 }

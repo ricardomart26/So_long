@@ -23,4 +23,3 @@ void	init_images(t_master *master)
 	xmp_to_image(master, &master->life, "pictures/lives.XPM");
 	xmp_to_image(master, &master->black, "pictures/black.XPM");
 }
-//moon_floor
