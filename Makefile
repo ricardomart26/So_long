@@ -38,6 +38,7 @@ fclean: clean
 	make fclean -C $(LIBFT_DIR)
 	rm -fr libft.a
 	rm -f $(NAME)
+	rm -f libmlx.dylib
 
 re: fclean $(NAME)
 
