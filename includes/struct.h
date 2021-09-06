@@ -1,7 +1,7 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define BUF_SIZE 1024
+# define BUF_SIZE 5000
 
 typedef struct s_img
 {

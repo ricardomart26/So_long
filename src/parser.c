@@ -42,29 +42,31 @@ int	**alloc_map(int size, int size2)
 	return (map2d);
 }
 
-void	get_array(t_map *map, char *fname, t_parse_info *info)
+void	get_array(t_map **map, char *fname, t_parse_info *info)
 {
 	t_file	f;
 	int		x;
 
 	open_file(&f.fd, fname, 0);
-	map->map2d = alloc_map(map->height, map->width);
+	(*map)->map2d = alloc_map((*map)->height, (*map)->width);
 	f.index = 0;
 	f.total = 0;
 	while ((read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
 	{
 		f.buffer[BUF_SIZE - 1] = 0;
-		while (f.index < map->height)
+		while (f.index < (*map)->height)
 		{
 			x = 0;
-			while (x < map->width && f.buffer[f.total] != '\n')
+			while (x < (*map)->width && f.buffer[f.total] != '\n')
 			{
-				map->map2d[f.index][x] = check_elem(f.buffer[f.total], info);
-				if (map->map2d[f.index][x] == -1)
+				(*map)->map2d[f.index][x] = check_elem(f.buffer[f.total], info);
+				printf("%d", (*map)->map2d[f.index][x]);
+				if ((*map)->map2d[f.index][x] == -1)
 					error_msg("Invalid char at map\n");
 				x++;
 				f.total++;
 			}
+			printf("\n"); 
 			f.total++;
 			f.index++;
 		}
@@ -78,10 +80,14 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	i = -1;
 	while (++i < widht - 1)
 	{
+		printf("heigth %d\n", height);
+		printf("bottom map %d\n", map->map2d[height - 1][i]);
 		if (map->map2d[0][i] != 1)
 			error_msg("Top wall not closed\n");
 		if (map->map2d[height - 1][i] != 1)
 			error_msg("Bottom wall not closed\n");
+		else
+			printf("bottom map %d\n", map->map2d[height - 1][i]);
 	}
 	i = -1;
 	while (++i < height - 1)
@@ -105,7 +111,7 @@ void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 	counter = 0;
 	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
-		f.buffer[1023] = 0;
+		f.buffer[4999] = 0;
 		while (is_valid(f.buffer[f.index]))
 		{
 			while (f.buffer[f.index] != '1' && counter == 0)
@@ -120,7 +126,7 @@ void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 		g_struct.height = map->height;
 	}
 	close(fd);
-	get_array(map, file_name, info);
-	if (!validate_array(map, map->width, map->height, *info))
+	get_array(&map, file_name, info);
+	if (!validate_array(map, g_struct.width, g_struct.height, *info))
 		error_msg("Something wrong with the map");
 }

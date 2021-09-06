@@ -12,8 +12,8 @@
 
 # define IMG_HEIGHT	79
 # define IMG_WIDTH	79
-# define WIN_WIDTH	1500
-# define WIN_HEIGHT	1000
+# define WIN_WIDTH	1000
+# define WIN_HEIGHT	500
 # define FLOOR 0
 # define WALL 1
 # define P 2

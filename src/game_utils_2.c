@@ -13,9 +13,10 @@ int	exit_hook(t_master *master)
 	int	i;
 
 	i = -1;
-	while (++i < WIN_WIDTH)
+	while (++i < g_struct.width)
 		free(master->map->map2d[i]);
 	free(master->map->map2d);
+	free(master->map);
 	mlx_destroy_image(master->mlx, master->floor.img_var);
 	mlx_destroy_image(master->mlx, master->rocket.img_var);
 	mlx_destroy_image(master->mlx, master->col.img.img_var);

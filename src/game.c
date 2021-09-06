@@ -32,7 +32,7 @@ int	game_eng(int key, t_master *m)
 void	start_game(t_master *m)
 {
 	m->mlx = mlx_init();
-	m->win = mlx_new_window(m->mlx, WIN_WIDTH, WIN_HEIGHT, "fds");
+	m->win = mlx_new_window(m->mlx, m->map->width * IMG_WIDTH, m->map->height * IMG_HEIGHT, "fds");
 	init_images(m);
 	draw(m);
 	mlx_key_hook(m->win, game_eng, m);
