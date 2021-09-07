@@ -11,9 +11,9 @@ void	init_master(t_master *master)
 void	init_map(t_map **map)
 {
 	*map = malloc(sizeof(t_map) + 1);
-	(*map)->height = 0;
+	(*map)->h = 1;
 	(*map)->total = 0;
-	(*map)->width = 0;
+	(*map)->w = 0;
 	(*map)->pos_x_y.x = 0;
 	(*map)->pos_x_y.y = 0;
 	(*map)->map2d = NULL;

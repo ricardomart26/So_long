@@ -10,8 +10,8 @@
 # include "../minilibx_mms_20200219/mlx.h"
 # include "../Libft/libft.h"
 
-# define IMG_HEIGHT	79
-# define IMG_WIDTH	79
+# define IMG_H	79
+# define IMG_W	79
 # define WIN_WIDTH	1000
 # define WIN_HEIGHT	500
 # define FLOOR 0
@@ -52,8 +52,8 @@ typedef struct parse_info
 typedef struct s_map
 {
 	int			total;
-	int			width;
-	int			height;
+	int			w;
+	int			h;
 	int			**map2d;
 	t_vector	pos_x_y;
 }		t_map;
@@ -104,7 +104,7 @@ void	get_map_cordinates(t_map *map, int x, int y);
 void	refresh_map(t_master *master, int newx, int newy);
 int		check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info);
-int		is_valid(char c);
+int		is_valid(char c, char after_c);
 void	error_msg(char *str);
 int		width_map(int *width, char *buffer, int *counter);
 void	open_file(int *fd, char *fname, int opt);

@@ -10,7 +10,10 @@ int	not_wall(t_master *master, int x, int y)
 void	update_coll(t_master *master, int x, int y)
 {
 	if (master->map->map2d[y][x] == C && master->col.number_of_c != 0)
+	{
 		master->col.number_of_c--;
+		master->map->map2d[y][x] = 0;
+	}
 	master->player_moves++;
 }
 

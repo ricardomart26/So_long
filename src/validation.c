@@ -1,8 +1,10 @@
 #include "../includes/so_long.h"
 
-int	is_valid(char c)
+int	is_valid(char c, char after_c)
 {
-	if (c == '1' || c == '0' || c == 'C' || c == 'E' || \
+	if (c == '\n' && after_c == '\n')
+		return (0);
+	else if (c == '1' || c == '0' || c == 'C' || c == 'E' || \
 		c == 'P' || c == '\n' || c == 'D')
 		return (1);
 	return (0);

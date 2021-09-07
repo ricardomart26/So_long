@@ -13,7 +13,7 @@ int	exit_hook(t_master *master)
 	int	i;
 
 	i = -1;
-	while (++i < g_struct.width)
+	while (++i < g_struct.height - 1)
 		free(master->map->map2d[i]);
 	free(master->map->map2d);
 	free(master->map);

@@ -23,10 +23,10 @@ void	draw(t_master *m)
 	t_img		*img;
 
 	vec.y = -1;
-	while (++vec.y < m->map->height)
+	while (++vec.y < m->map->h)
 	{
 		vec.x = -1;
-		while (++vec.x < m->map->width)
+		while (++vec.x < m->map->w)
 		{
 			get_map_cordinates(m->map, vec.x, vec.y);
 			if (m->map->map2d[vec.y][vec.x] == WALL)

@@ -48,25 +48,24 @@ void	get_array(t_map **map, char *fname, t_parse_info *info)
 	int		x;
 
 	open_file(&f.fd, fname, 0);
-	(*map)->map2d = alloc_map((*map)->height, (*map)->width);
+	(*map)->map2d = alloc_map((*map)->h, (*map)->w);
 	f.index = 0;
 	f.total = 0;
 	while ((read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
 	{
 		f.buffer[BUF_SIZE - 1] = 0;
-		while (f.index < (*map)->height)
+		while (f.index < (*map)->h)
 		{
 			x = 0;
-			while (x < (*map)->width && f.buffer[f.total] != '\n')
+			while (x < (*map)->w && f.buffer[f.total] != '\n')
 			{
 				(*map)->map2d[f.index][x] = check_elem(f.buffer[f.total], info);
-				printf("%d", (*map)->map2d[f.index][x]);
+				// printf("map2d[%d][%d] %d \n", f.index, x, (*map)->map2d[f.index][x]);
 				if ((*map)->map2d[f.index][x] == -1)
 					error_msg("Invalid char at map\n");
 				x++;
 				f.total++;
 			}
-			printf("\n"); 
 			f.total++;
 			f.index++;
 		}
@@ -78,6 +77,7 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	int	i;
 
 	i = -1;
+	printf("teste \n");
 	while (++i < widht - 1)
 	{
 		printf("heigth %d\n", height);
@@ -86,8 +86,6 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 			error_msg("Top wall not closed\n");
 		if (map->map2d[height - 1][i] != 1)
 			error_msg("Bottom wall not closed\n");
-		else
-			printf("bottom map %d\n", map->map2d[height - 1][i]);
 	}
 	i = -1;
 	while (++i < height - 1)
@@ -102,6 +100,25 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	return (1);
 }
 
+void	print_array(t_map *map)
+{
+	int x;
+	int i;
+	
+	i = 0;
+	while (i < map->h)
+	{
+		x = 0;
+		while (x < map->w)
+		{
+			printf("%d", map->map2d[i][x]);
+			x++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
 void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 {
 	t_file			f;
@@ -112,21 +129,23 @@ void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 	while (read(fd, &f.buffer, BUF_SIZE - 1) > 0)
 	{
 		f.buffer[4999] = 0;
-		while (is_valid(f.buffer[f.index]))
+		while (is_valid(f.buffer[f.index], f.buffer[f.index + 1]))
 		{
 			while (f.buffer[f.index] != '1' && counter == 0)
 				f.index++;
 			if (counter == 0)
-				f.index = width_map(&map->width, f.buffer, &counter);
-			if (f.buffer[f.index] == '\n')
-				map->height++;
+				f.index = width_map(&map->w, f.buffer, &counter);
+			if (f.buffer[f.index] == '\n' )
+				map->h++;
 			f.index++;
 		}
-		g_struct.width = map->width;
-		g_struct.height = map->height;
+		g_struct.width = map->w;
+		g_struct.height = map->h;
 	}
+	printf("height %d width %d\n", g_struct.height, g_struct.width);
 	close(fd);
 	get_array(&map, file_name, info);
+	print_array(map);
 	if (!validate_array(map, g_struct.width, g_struct.height, *info))
 		error_msg("Something wrong with the map");
 }
