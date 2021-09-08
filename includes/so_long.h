@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 03:43:11 by rimartin          #+#    #+#             */
+/*   Updated: 2021/09/08 03:43:42 by rimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
@@ -34,7 +46,7 @@ typedef struct s_global
 	int	width;
 }		t_global;
 
-t_global g_struct;
+t_global	g_struct;
 
 typedef struct s_vector
 {
@@ -95,7 +107,6 @@ typedef struct s_master
 	t_img		black;
 }		t_master;
 
-
 void	add_last_position(t_player *player, int x, int y);
 int		exit_win_hook(t_master *master);
 void	draw(t_master *master);
@@ -106,7 +117,7 @@ int		check_file(char *file, char *ext);
 void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info);
 int		is_valid(char c, char after_c);
 void	error_msg(char *str);
-int		width_map(int *width, char *buffer, int *counter);
+void	width_map(int *width, char *buffer, int *counter, int *index);
 void	open_file(int *fd, char *fname, int opt);
 void	update_coll(t_master *master, int x, int y);
 int		not_wall(t_master *master, int x, int y);

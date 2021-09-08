@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 03:38:39 by rimartin          #+#    #+#             */
+/*   Updated: 2021/09/08 03:38:40 by rimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 void	update_pos(t_master *master)
@@ -31,8 +43,13 @@ int	game_eng(int key, t_master *m)
 
 void	start_game(t_master *m)
 {
+	int	width;
+	int	heigth;
+
+	width = m->map->w * IMG_W;
+	heigth = m->map->h * IMG_H;
 	m->mlx = mlx_init();
-	m->win = mlx_new_window(m->mlx, m->map->w * IMG_W, m->map->h * IMG_H, "fds");
+	m->win = mlx_new_window(m->mlx, width, heigth, "fds");
 	init_images(m);
 	draw(m);
 	mlx_key_hook(m->win, game_eng, m);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 03:39:14 by rimartin          #+#    #+#             */
+/*   Updated: 2021/09/08 03:39:15 by rimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 void	open_file(int *fd, char *fname, int opt)
@@ -8,16 +20,15 @@ void	open_file(int *fd, char *fname, int opt)
 		error_msg("Error reading file\n");
 }
 
-int	width_map(int *width, char *buffer, int *counter)
+void	width_map(int *width, char *buffer, int *counter, int *index)
 {
 	int	i;
 
 	i = 0;
-	while (buffer[i] != '\n')
+	while (buffer[*index] != '\n')
 	{
 		(*width)++;
-		i++;
+		(*index)++;
 	}
 	*counter = 1;
-	return (i);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 03:39:17 by rimartin          #+#    #+#             */
+/*   Updated: 2021/09/08 03:41:49 by rimartin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 int	check_elem(char c, t_parse_info *info)
@@ -49,25 +61,24 @@ void	get_array(t_map **map, char *fname, t_parse_info *info)
 
 	open_file(&f.fd, fname, 0);
 	(*map)->map2d = alloc_map((*map)->h, (*map)->w);
-	f.index = 0;
+	f.index = -1;
 	f.total = 0;
 	while ((read(f.fd, &f.buffer, BUF_SIZE - 1) > 0))
 	{
 		f.buffer[BUF_SIZE - 1] = 0;
-		while (f.index < (*map)->h)
+		while (++f.index < (*map)->h)
 		{
-			x = 0;
-			while (x < (*map)->w && f.buffer[f.total] != '\n')
+			while (f.buffer[f.total] != '1')
+				f.total++;
+			x = -1;
+			while (++x < (*map)->w && f.buffer[f.total] != '\n')
 			{
 				(*map)->map2d[f.index][x] = check_elem(f.buffer[f.total], info);
-				// printf("map2d[%d][%d] %d \n", f.index, x, (*map)->map2d[f.index][x]);
 				if ((*map)->map2d[f.index][x] == -1)
 					error_msg("Invalid char at map\n");
-				x++;
 				f.total++;
 			}
 			f.total++;
-			f.index++;
 		}
 	}
 }
@@ -77,11 +88,8 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	int	i;
 
 	i = -1;
-	printf("teste \n");
 	while (++i < widht - 1)
 	{
-		printf("heigth %d\n", height);
-		printf("bottom map %d\n", map->map2d[height - 1][i]);
 		if (map->map2d[0][i] != 1)
 			error_msg("Top wall not closed\n");
 		if (map->map2d[height - 1][i] != 1)
@@ -100,25 +108,6 @@ int	validate_array(t_map *map, int widht, int height, t_parse_info info)
 	return (1);
 }
 
-void	print_array(t_map *map)
-{
-	int x;
-	int i;
-	
-	i = 0;
-	while (i < map->h)
-	{
-		x = 0;
-		while (x < map->w)
-		{
-			printf("%d", map->map2d[i][x]);
-			x++;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
 void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 {
 	t_file			f;
@@ -134,18 +123,16 @@ void	parse_file(int fd, t_map *map, char *file_name, t_parse_info *info)
 			while (f.buffer[f.index] != '1' && counter == 0)
 				f.index++;
 			if (counter == 0)
-				f.index = width_map(&map->w, f.buffer, &counter);
-			if (f.buffer[f.index] == '\n' )
+				width_map(&map->w, f.buffer, &counter, &f.index);
+			if (f.buffer[f.index] == '\n')
 				map->h++;
 			f.index++;
 		}
 		g_struct.width = map->w;
 		g_struct.height = map->h;
 	}
-	printf("height %d width %d\n", g_struct.height, g_struct.width);
 	close(fd);
 	get_array(&map, file_name, info);
-	print_array(map);
 	if (!validate_array(map, g_struct.width, g_struct.height, *info))
 		error_msg("Something wrong with the map");
 }
