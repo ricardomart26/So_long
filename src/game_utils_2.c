@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 03:38:30 by rimartin          #+#    #+#             */
-/*   Updated: 2021/09/08 03:38:32 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/09/14 21:18:25 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	game_finished(t_master *master, int x, int y)
 int	exit_hook(t_master *master)
 {
 	int	i;
+	int **map;
 
 	i = -1;
 	while (++i < g_struct.height - 1)
@@ -43,8 +44,8 @@ int	exit_hook(t_master *master)
 
 int	winner(int keycode, t_master *master)
 {
-	master->map->pos_x_y.y = WIN_HEIGHT / 4 - 200;
-	master->map->pos_x_y.x = WIN_WIDTH / 4 - 250;
+	master->map->pos_x_y.y = WIN_HEIGHT / 4;
+	master->map->pos_x_y.x = WIN_WIDTH / 4;
 	put_img(master, &master->final, master->map);
 	if (keycode == ENTER || keycode == ESC)
 		exit_hook(master);

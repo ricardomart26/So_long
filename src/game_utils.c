@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 03:38:35 by rimartin          #+#    #+#             */
-/*   Updated: 2021/09/08 03:38:36 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/09/14 20:53:43 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	update_coll(t_master *master, int x, int y)
 		master->col.number_of_c--;
 		master->map->map2d[y][x] = 0;
 	}
+	if (master->player_moves >= 50)
+		exit_hook(master);
 	master->player_moves++;
 }
 
