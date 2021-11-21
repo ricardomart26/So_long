@@ -6,7 +6,7 @@
 /*   By: rimartin <rimartin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 03:38:30 by rimartin          #+#    #+#             */
-/*   Updated: 2021/09/14 21:18:25 by rimartin         ###   ########.fr       */
+/*   Updated: 2021/09/25 18:11:24 by rimartin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	game_finished(t_master *master, int x, int y)
 int	exit_hook(t_master *master)
 {
 	int	i;
-	int **map;
 
 	i = -1;
 	while (++i < g_struct.height - 1)
